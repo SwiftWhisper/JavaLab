@@ -18,4 +18,31 @@ public class Employee {
         this.position = position;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getNameSurname() {
+        return nameSurname;
+    }
+
+    public void setNameSurname(String nameSurname) {
+        this.nameSurname = nameSurname;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
 }
