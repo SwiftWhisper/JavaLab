@@ -1,5 +1,7 @@
 package sumdu.edu.ua;
 
+import java.util.Objects;
+
 public class Employee {
     private int id;
     private static int nextId=1;
@@ -55,4 +57,21 @@ public class Employee {
             ", position='" + position + '\'' +
             '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee emp)) return false;
+
+        return id == emp.id
+                && Double.compare(salary, emp.salary) == 0 
+                && Objects.equals(nameSurname, emp.nameSurname)
+                && Objects.equals(position, emp.position);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nameSurname, salary, position);
+    }
+    
 }
