@@ -6,6 +6,7 @@ public class Employee {
     private int id;
     private static int nextId=1;
     private String nameSurname;
+    private int age;
     private double salary;
     private String position;
 
@@ -13,9 +14,10 @@ public class Employee {
         this.id = nextId++;
     }
     
-    public Employee(String nameSurname, double salary, String position) {
+    public Employee(String nameSurname, int age, double salary, String position) {
         this();
         this.nameSurname = nameSurname;
+        this.age = age;
         this.salary = salary;
         this.position = position;
     }
@@ -30,6 +32,14 @@ public class Employee {
 
     public void setNameSurname(String nameSurname) {
         this.nameSurname = nameSurname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public double getSalary() {
@@ -53,6 +63,7 @@ public class Employee {
         return "Employee{" +
             "id=" + id +
             ", nameSurname='" + nameSurname + '\'' +
+            ", age=" + age +
             ", salary=" + salary +
             ", position='" + position + '\'' +
             '}';
@@ -64,14 +75,15 @@ public class Employee {
         if (!(o instanceof Employee emp)) return false;
 
         return id == emp.id
-                && Double.compare(salary, emp.salary) == 0 
+                && age == emp.age
+                && Double.compare(salary, emp.salary) == 0
                 && Objects.equals(nameSurname, emp.nameSurname)
                 && Objects.equals(position, emp.position);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nameSurname, salary, position);
+        return Objects.hash(id, nameSurname, age, salary, position);
     }
     
 }
