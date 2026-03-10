@@ -8,18 +8,35 @@ public class Main {
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
 
-        int empNum = readEmpNum(scanner);
-        System.out.println();
-
         List<Employee> employees = new ArrayList<Employee>();
 
-        for(int i = 0; i < empNum; i++){
-            employees.add(createEmployee(scanner, i+1));
-            System.out.println();
+        while (true) {
+            int opt = readOpt(scanner);
+            switch (opt) {
+                case 1:
+                    employees.add(createEmployee(scanner, employees.size() + 1));
+                    System.out.println();
+
+                    break;
+
+                case 2:
+                    if (employees.isEmpty()){ 
+                        System.out.println("Список співробітників порожній.");
+                        System.out.println();
+                    } else{
+                        for(Employee e : employees) {System.out.println(e);}
+                        System.out.println();
+                    }
+                    break;
+
+                case 3:
+                    return;
+
+                default:
+                    System.out.println("Такої опції немає, спробуйте ще раз.");
+            }
         }
-        for(Employee e : employees){
-            System.out.println(e);
-        }
+
     }
 
     private static Employee createEmployee(Scanner scanner, int i){
@@ -31,18 +48,18 @@ public class Main {
         return new Employee(nameSurname, age,salary, position); 
     }
 
-    private static int readEmpNum(Scanner scanner) {
+    private static int readOpt(Scanner scanner) {
         while (true) {
-            System.out.print("Ведіть кількість співробітників яких потрібно додати: ");
+            System.out.println("Виберіть дію обравши її номер:");
+            System.out.println("1. Додати нового співробітника.");
+            System.out.println("2. Вивести усіх співробітників.");
+            System.out.println("3. Завершити програму.");
+            System.out.println();
+
             String input = scanner.nextLine();
 
             try {
                 int num = Integer.parseInt(input);
-
-                if (num <= 0) {
-                    System.out.println("Помилка: має бути мінімум 1 співробітник.");
-                    continue;
-                }
 
                 return num;
             }
