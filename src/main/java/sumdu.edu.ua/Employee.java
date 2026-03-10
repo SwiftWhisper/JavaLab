@@ -16,10 +16,10 @@ public class Employee {
     
     public Employee(String nameSurname, int age, double salary, String position) {
         this();
-        this.nameSurname = nameSurname;
-        this.age = age;
-        this.salary = salary;
-        this.position = position;
+        setNameSurname(nameSurname);
+        setAge(age);
+        setSalary(salary);
+        setPosition(position);
     }
 
     public int getId() {
@@ -31,6 +31,14 @@ public class Employee {
     }
 
     public void setNameSurname(String nameSurname) {
+        if (nameSurname == null || nameSurname.isBlank()) {
+            throw new IllegalArgumentException("Помилка: ви не ввели ім'я та прізвище співробітника.");
+        }
+
+        if (!nameSurname.matches("[a-zA-Zа-яА-ЯіїєІЇЄ'\\- ]+")) {
+            throw new IllegalArgumentException("Помилка: ім'я може містити тільки букви.");
+        }
+
         this.nameSurname = nameSurname;
     }
 
@@ -39,6 +47,7 @@ public class Employee {
     }
 
     public void setAge(int age) {
+        if(age < 18){throw new IllegalArgumentException("Співробітник має бути повнолітнім!");}
         this.age = age;
     }
 
@@ -47,6 +56,8 @@ public class Employee {
     }
 
     public void setSalary(double salary) {
+        if(salary < 0){throw new IllegalArgumentException("Помилка: заробітня плата не може бути від'ємною!");}
+
         this.salary = salary;
     }
 
@@ -55,6 +66,9 @@ public class Employee {
     }
 
     public void setPosition(String position) {
+        if (position == null || position.isBlank()) {
+            throw new IllegalArgumentException("Помилка: ви не ввели посаду співробітника.");
+        }
         this.position = position;
     }
 
