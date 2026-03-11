@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    /**
+     * Точка входу в програму.
+     *
+     * @param args аргументи командного рядка
+     */
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
 
@@ -39,6 +44,13 @@ public class Main {
 
     }
 
+    /**
+     * Відповідає за створення співробітника.
+     *
+     * @param scanner об'єкт для читання інформації від користувача
+     * @param i номер співробітника масиву, який створюється
+     * @return створений співробітник
+     */
     private static Employee createEmployee(Scanner scanner, int i){
         String nameSurname = readNameSurname(scanner, i);
         int age = readAge(scanner, i);
@@ -48,6 +60,12 @@ public class Main {
         return new Employee(nameSurname, age,salary, position); 
     }
 
+    /**
+     * Відповідає за зчитування і валідацію вибора користувача у меню.
+
+     * @param scanner об'єкт для читання інформації від користувача
+     * @return вибрана користувачем опція меню
+     */
     private static int readOpt(Scanner scanner) {
         while (true) {
             System.out.println("Виберіть дію обравши її номер:");
@@ -69,6 +87,13 @@ public class Main {
         }
     }
     
+    /**
+     * Відповідає за зчитування і валідацію віку співробітника.
+
+     * @param scanner об'єкт для читання інформації від користувача
+     * @param i номер співробітника масиву, який створюється
+     * @return коректний вік співробітника
+     */
     private static int readAge(Scanner scanner, int i) {
         while (true) {
             System.out.print("Введіть вік співробітника під номером " + i + ": ");
@@ -90,6 +115,13 @@ public class Main {
         }
     }
 
+    /**
+     * Відповідає за зчитування і валідацію заробітної плати співробітника.
+
+     * @param scanner об'єкт для читання інформації від користувача
+     * @param i номер співробітника масиву, який створюється
+     * @return коректні заробітну плату співробітника
+     */
     private static double readSalary(Scanner scanner, int i) {
         while (true) {
             System.out.print("Введіть заробітню плату для співробітника під номером " + i + ": ");
@@ -111,6 +143,13 @@ public class Main {
         }
     }
 
+    /**
+     * Відповідає за зчитування і валідацію імені та прізвища співробітника.
+
+     * @param scanner об'єкт для читання інформації від користувача
+     * @param i номер співробітника масиву, який створюється
+     * @return коректне ім'я та прізвище співробітника
+     */
     private static String readNameSurname(Scanner scanner, int i) {
         while (true) {
             System.out.print("Введіть ім'я та прізвище для співробітника під номером " + i + ": ");
@@ -130,6 +169,13 @@ public class Main {
         }
     }
 
+    /**
+     * Відповідає за зчитування і валідацію посади співробітника.
+
+     * @param scanner об'єкт для читання інформації від користувача
+     * @param i номер співробітника масиву, який створюється
+     * @return коректна посада співробітника
+     */
     private static String readPosition(Scanner scanner, int i) {
         while (true) {
             System.out.print("Введіть посаду для співробітника під номером " + i + ": ");
