@@ -22,6 +22,14 @@ public class Employee {
         setPosition(position);
     }
 
+    public Employee(Employee other) {
+        this();
+        this.nameSurname = other.nameSurname;
+        this.age = other.age;
+        this.salary = other.salary;
+        this.position = other.position; 
+    }
+
     public int getId() {
         return id;
     }
