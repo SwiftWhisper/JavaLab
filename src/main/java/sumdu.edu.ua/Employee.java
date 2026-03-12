@@ -10,8 +10,15 @@ public class Employee {
     private double salary;
     private String position;
 
+    private static int empCount = 0;
+
+    public static int getEmpCount() {
+        return empCount;
+    }
+
     public Employee() {
         this.id = nextId++;
+        empCount++;
     }
     
     public Employee(String nameSurname, int age, double salary, String position) {
