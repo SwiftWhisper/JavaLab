@@ -8,7 +8,7 @@ public class Employee {
     private String nameSurname;
     private int age;
     private double salary;
-    private String position;
+    private Position position;
 
     private static int empCount = 0;
 
@@ -21,7 +21,7 @@ public class Employee {
         empCount++;
     }
     
-    public Employee(String nameSurname, int age, double salary, String position) {
+    public Employee(String nameSurname, int age, double salary, Position position) {
         this();
         setNameSurname(nameSurname);
         setAge(age);
@@ -76,12 +76,12 @@ public class Employee {
         this.salary = salary;
     }
 
-    public String getPosition() {
+    public Position getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
-        if (position == null || position.isBlank()) {
+    public void setPosition(Position position) {
+        if (position == null) {
             throw new IllegalArgumentException("Помилка: ви не ввели посаду співробітника.");
         }
         this.position = position;
@@ -107,7 +107,7 @@ public class Employee {
                 && age == emp.age
                 && Double.compare(salary, emp.salary) == 0
                 && Objects.equals(nameSurname, emp.nameSurname)
-                && Objects.equals(position, emp.position);
+                && position == emp.position;
     }
 
     @Override

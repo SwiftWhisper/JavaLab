@@ -1,5 +1,6 @@
 package sumdu.edu.ua;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -55,7 +56,7 @@ public class Main {
         String nameSurname = readNameSurname(scanner, i);
         int age = readAge(scanner, i);
         double salary = readSalary(scanner, i);
-        String position = readPosition(scanner, i);
+        Position position = readPosition(scanner, i);
 
         return new Employee(nameSurname, age,salary, position); 
     }
@@ -176,8 +177,10 @@ public class Main {
      * @param i номер співробітника масиву, який створюється
      * @return коректна посада співробітника
      */
-    private static String readPosition(Scanner scanner, int i) {
+    private static Position readPosition(Scanner scanner, int i) {
         while (true) {
+
+            System.out.println("Доступні посади: " + Arrays.toString(Position.values()));
             System.out.print("Введіть посаду для співробітника під номером " + i + ": ");
             String input = scanner.nextLine().trim();
 
@@ -186,7 +189,12 @@ public class Main {
                 continue;
             }
 
-            return input;
+            try {
+                return Position.valueOf(input.toUpperCase());
+            }
+            catch (IllegalArgumentException e){
+                System.out.println("Помилка: Такої посади не існує!");
+            }
         }
     }
  
