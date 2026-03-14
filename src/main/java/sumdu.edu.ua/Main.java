@@ -14,28 +14,22 @@ public class Main {
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
 
-        List<Employee> employees = new ArrayList<Employee>();
+        Company company = new Company("Google");
 
         while (true) {
             int opt = readOpt(scanner);
             switch (opt) {
                 case 1:
-                    employees.add(createEmployee(scanner, employees.size() + 1));
+                    company.addEmployee(createEmployee(scanner, Employee.getEmpCount() + 1));
                     System.out.println();
-
                     break;
-
                 case 2:
-                    if (employees.isEmpty()){ 
-                        System.out.println("Список співробітників порожній.");
-                        System.out.println();
-                    } else{
-                        for(Employee e : employees) {System.out.println(e);}
-                        System.out.println();
-                    }
+                    System.out.println(company);
                     break;
-
-                case 3:
+                case 3: 
+                    System.out.println("Кількість співробітників:" + Employee.getEmpCount());
+                    break;
+                case 4:
                     return;
 
                 default:
@@ -71,8 +65,9 @@ public class Main {
         while (true) {
             System.out.println("Виберіть дію обравши її номер:");
             System.out.println("1. Додати нового співробітника.");
-            System.out.println("2. Вивести усіх співробітників.");
-            System.out.println("3. Завершити програму.");
+            System.out.println("2. Вивести інформацію про компанію.");
+            System.out.println("3. Вивести кількість співробітників.");
+            System.out.println("4. Завершити програму.");
             System.out.println();
 
             String input = scanner.nextLine();
