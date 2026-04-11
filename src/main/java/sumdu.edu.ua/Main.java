@@ -1,8 +1,5 @@
 package sumdu.edu.ua;
 
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -13,30 +10,67 @@ public class Main {
      */
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
+        ConsoleInput input = new ConsoleInput(scanner);
 
         Company company = new Company("Google");
 
+        showMainMenu(company, input);
+    }
+
+    private static void showMainMenu(Company company, ConsoleInput input) {
         while (true) {
-            int opt = readOpt(scanner);
+            System.out.println("Виберіть дію обравши її номер:");
+            System.out.println("1. Додати нового співробітника.");
+            System.out.println("2. Вивести інформацію про компанію.");
+            System.out.println("3. Завершити програму.");
+            System.out.println();
+
+            
+            int opt = input.readInt("Ваш вибір: ");
             switch (opt) {
                 case 1:
-                    company.addEmployee(createEmployee(scanner, Employee.getEmpCount() + 1));
-                    System.out.println();
+                    showEmpCreationMenu(company,input);
                     break;
                 case 2:
                     System.out.println(company);
                     break;
-                case 3: 
-                    System.out.println("Кількість співробітників:" + Employee.getEmpCount());
-                    break;
-                case 4:
+                case 3:
                     return;
 
                 default:
                     System.out.println("Такої опції немає, спробуйте ще раз.");
             }
-        }
 
+        }
+    }
+
+    private static void showEmpCreationMenu(Company company, ConsoleInput input) {
+        while (true) {
+            System.out.println("Виберіть тип співробітника якого ви будете додавати:");
+            System.out.println("1. Full time employee.");
+            System.out.println("2. ContractEmployee");
+            System.out.println("3. Відмінити створення співробітника.");
+            System.out.println();
+
+            int opt = input.readInt("Ваш вибір: ");
+
+            switch (opt) {
+                case 1:
+                    company.addEmployee(createFullTimeEmp(input));
+                    System.out.println();
+                    break;
+                case 2:
+                    company.addEmployee(createContractEmp(input));
+                    System.out.println();
+                    break;
+                case 3:
+                    return;
+
+                default:
+                    System.out.println("Такої опції немає, спробуйте ще раз.");
+            }
+
+        }
     }
 
     /**
@@ -46,151 +80,47 @@ public class Main {
      * @param i номер співробітника масиву, який створюється
      * @return створений співробітник
      */
-    private static Employee createEmployee(Scanner scanner, int i){
-        String nameSurname = readNameSurname(scanner, i);
-        int age = readAge(scanner, i);
-        double salary = readSalary(scanner, i);
-        Position position = readPosition(scanner, i);
+    private static Employee createEmployee(ConsoleInput input) {
+        String nameSurname = input.readValidNameSurname("Введіть ім'я та прізвище співробітника: ");
+        int age = input.readValidAge("Введіть вік співробітника: ");
+        double salary = input.readValidSalary("Введіть заробітню плату для співробітника: ");
+        Position position = input.readPosition();
 
         return new Employee(nameSurname, age,salary, position); 
     }
 
     /**
-     * Відповідає за зчитування і валідацію вибора користувача у меню.
-
-     * @param scanner об'єкт для читання інформації від користувача
-     * @return вибрана користувачем опція меню
-     */
-    private static int readOpt(Scanner scanner) {
-        while (true) {
-            System.out.println("Виберіть дію обравши її номер:");
-            System.out.println("1. Додати нового співробітника.");
-            System.out.println("2. Вивести інформацію про компанію.");
-            System.out.println("3. Вивести кількість співробітників.");
-            System.out.println("4. Завершити програму.");
-            System.out.println();
-
-            String input = scanner.nextLine();
-
-            try {
-                int num = Integer.parseInt(input);
-
-                return num;
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Помилка: потрібно ввести ціле число!");
-            }
-        }
-    }
-    
-    /**
-     * Відповідає за зчитування і валідацію віку співробітника.
-
+     * Відповідає за створення контрактного співробітника.
+     *
      * @param scanner об'єкт для читання інформації від користувача
      * @param i номер співробітника масиву, який створюється
-     * @return коректний вік співробітника
+     * @return створений співробітник
      */
-    private static int readAge(Scanner scanner, int i) {
-        while (true) {
-            System.out.print("Введіть вік співробітника під номером " + i + ": ");
-            String input = scanner.nextLine();
+    private static ContractEmployee createContractEmp(ConsoleInput input) {
+        String nameSurname = input.readValidNameSurname("Введіть ім'я та прізвище співробітника: ");
+        int age = input.readValidAge("Введіть вік співробітника: ");
+        double salary = input.readValidSalary("Введіть заробітню плату для співробітника: ");
+        Position position = input.readPosition();        
+        int yearDurationOfContract = input.readValidDurationOfContract("Введіть довжину контракту для співробітника: ");
 
-            try {
-                int age = Integer.parseInt(input);
-
-                if (age < 18) {
-                    System.out.println("Співробітник має бути повнолітнім!");
-                    continue;
-                }
-
-                return age;
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Помилка: потрібно ввести ціле число!");
-            }
-        }
+        return new ContractEmployee(nameSurname, age,salary, position, yearDurationOfContract); 
     }
 
     /**
-     * Відповідає за зчитування і валідацію заробітної плати співробітника.
-
+     * Відповідає за створення штатного співробітника.
+     *
      * @param scanner об'єкт для читання інформації від користувача
      * @param i номер співробітника масиву, який створюється
-     * @return коректні заробітну плату співробітника
+     * @return створений співробітник
      */
-    private static double readSalary(Scanner scanner, int i) {
-        while (true) {
-            System.out.print("Введіть заробітню плату для співробітника під номером " + i + ": ");
-            String input = scanner.nextLine();
+    private static FullTimeEmployee createFullTimeEmp(ConsoleInput input){
+        String nameSurname = input.readValidNameSurname("Введіть ім'я та прізвище співробітника: ");
+        int age = input.readValidAge("Введіть вік співробітника: ");
+        double salary = input.readValidSalary("Введіть заробітню плату для співробітника: ");
+        Position position = input.readPosition();
+        int yearsInCompany = input.readValidYearsInCompany("Введіть кількькість років праці в компанії для співробітника: ");
 
-            try {
-                double salary = Double.parseDouble(input);
-
-                if (salary < 0) {
-                    System.out.println("Помилка: заробітня плата не може бути від'ємною!");
-                    continue;
-                }
-
-                return salary;
-            }
-            catch (NumberFormatException e) {
-                System.out.println("Помилка: потрібно ввести число!");
-            }
-        }
+        return new FullTimeEmployee(nameSurname, age,salary, position, yearsInCompany); 
     }
 
-    /**
-     * Відповідає за зчитування і валідацію імені та прізвища співробітника.
-
-     * @param scanner об'єкт для читання інформації від користувача
-     * @param i номер співробітника масиву, який створюється
-     * @return коректне ім'я та прізвище співробітника
-     */
-    private static String readNameSurname(Scanner scanner, int i) {
-        while (true) {
-            System.out.print("Введіть ім'я та прізвище для співробітника під номером " + i + ": ");
-            String input = scanner.nextLine().trim();
-
-            if(input.isEmpty()) {
-                System.out.println("Помилка: ви не ввели ім'я та прізвище співробітника.");
-                continue;
-            }
-
-            if (!input.matches("[a-zA-Zа-яА-ЯіїєІЇЄ'\\- ]+")) {
-                System.out.println("Помилка: ім'я може містити тільки букви.");
-                continue;
-            }
-
-            return input;
-        }
-    }
-
-    /**
-     * Відповідає за зчитування і валідацію посади співробітника.
-
-     * @param scanner об'єкт для читання інформації від користувача
-     * @param i номер співробітника масиву, який створюється
-     * @return коректна посада співробітника
-     */
-    private static Position readPosition(Scanner scanner, int i) {
-        while (true) {
-
-            System.out.println("Доступні посади: " + Arrays.toString(Position.values()));
-            System.out.print("Введіть посаду для співробітника під номером " + i + ": ");
-            String input = scanner.nextLine().trim();
-
-            if(input.isEmpty()) {
-                System.out.println("Помилка: ви не ввели посаду співробітника.");
-                continue;
-            }
-
-            try {
-                return Position.valueOf(input.toUpperCase());
-            }
-            catch (IllegalArgumentException e){
-                System.out.println("Помилка: Такої посади не існує!");
-            }
-        }
-    }
- 
 }
