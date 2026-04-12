@@ -12,6 +12,11 @@ public class FullTimeEmployee extends Employee{
         setYearsInCompany(yearsInCompany);
     }
 
+    public FullTimeEmployee(Employee other, int setYearsInCompany) {
+        super(other);
+        setYearsInCompany(yearsInCompany);
+    }
+
     public FullTimeEmployee(FullTimeEmployee other) {
         super(other);
         this.yearsInCompany = other.yearsInCompany;

@@ -12,6 +12,11 @@ public class ContractEmployee extends Employee{
         setDurationOfContract(durationOfContract);
     }
 
+    public ContractEmployee(Employee other, int durationOfContract) {
+        super(other);
+        setDurationOfContract(durationOfContract);
+    }
+
     public ContractEmployee(ContractEmployee other) {
         super(other);
         this.durationOfContract = other.durationOfContract;
