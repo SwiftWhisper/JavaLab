@@ -47,7 +47,9 @@ public class Main {
             System.out.println("Виберіть тип співробітника якого ви будете додавати:");
             System.out.println("1. Full time employee.");
             System.out.println("2. ContractEmployee");
-            System.out.println("3. Відмінити створення співробітника.");
+            System.out.println("3. PartTimeEmployee");
+            System.out.println("4. InternEmployee");
+            System.out.println("5. Відмінити створення співробітника.");
             System.out.println();
 
             int opt = input.readInt("Ваш вибір: ");
@@ -62,6 +64,14 @@ public class Main {
                     System.out.println();
                     break;
                 case 3:
+                    company.addEmployee(empFactory.createPartTimeEmployee());
+                    System.out.println();
+                    break;
+                case 4:
+                    company.addEmployee(empFactory.createInternEmployee());
+                    System.out.println();
+                    break;
+                case 5:
                     return;
                 default:
                     System.out.println("Такої опції немає, спробуйте ще раз.");
