@@ -1,5 +1,6 @@
 package sumdu.edu.ua;
 
+import sumdu.edu.ua.validators.*;
 import java.util.Scanner;
 
 public class ConsoleInput {
@@ -46,18 +47,11 @@ public class ConsoleInput {
         }
     }
 
-    /**
-     * Відповідає за зчитування і валідацію імені та прізвища співробітника.
-
-     * @param scanner об'єкт для читання інформації від користувача
-     * @param i номер співробітника масиву, який створюється
-     * @return коректне ім'я та прізвище співробітника
-     */
-    public String readValidNameSurname(String message) {
+    public String readValidNameSurname(String message, EmployeeValidator validator) {
         while (true) {
             String nameSurname = readNonEmptyString(message);
             try {
-                Employee.validateNameSurname(nameSurname);
+                validator.validateNameSurname(nameSurname);
                 return nameSurname;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
@@ -65,13 +59,6 @@ public class ConsoleInput {
         }
     }
 
-    /**
-     * Відповідає за зчитування і валідацію посади співробітника.
-
-     * @param scanner об'єкт для читання інформації від користувача
-     * @param i номер співробітника масиву, який створюється
-     * @return коректна посада співробітника
-     */
     public Position readPosition() {
         Position[] positions = Position.values();
         while (true) {
@@ -91,11 +78,11 @@ public class ConsoleInput {
         }
     }
 
-    public int readValidAge(String message) {
+    public int readValidAge(String message, EmployeeValidator validator) {
         while (true) {
             int age = readInt(message);
             try {
-                Employee.validateAge(age);
+                validator.validateAge(age);
                 return age;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
@@ -103,11 +90,11 @@ public class ConsoleInput {
         }
     }
 
-    public double readValidSalary(String message) {
+    public double readValidSalary(String message, EmployeeValidator validator) {
         while (true) {
             double salary = readDouble(message);
             try {
-                Employee.validateSalary(salary);
+                validator.validateSalary(salary);
                 return salary;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
@@ -115,11 +102,11 @@ public class ConsoleInput {
         }
     }
 
-    public int readValidYearsInCompany(String message) {
+    public int readValidYearsInCompany(String message, FullTimeEmployeeValidator validator) {
         while (true) {
             int years = readInt(message);
             try {
-                FullTimeEmployee.validateYearsInCompany(years);
+                validator.validateYearsInCompany(years);
                 return years;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
@@ -127,22 +114,60 @@ public class ConsoleInput {
         }
     }
 
-    /**
-     * Відповідає за зчитування і валідацію терміну дії контракту співробітника.
-
-     * @param scanner об'єкт для читання інформації від користувача
-     * @param i номер співробітника масиву, який створюється
-     * @return кількість років дії контракту
-     */
-    public int readValidDurationOfContract(String message) {
+    public int readValidDurationOfContract(String message, ContractEmployeeValidator validator) {
         while (true) {
             int years = readInt(message);
             try {
-                ContractEmployee.validateDurationOfContract(years);
+                validator.validateDurationOfContract(years);
                 return years;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    public int readValidHoursInDay(String message, PartTimeEmployeeValidator validator) {
+        while (true) {
+            int hours = readInt(message);
+            try {
+                validator.validateHoursInDay(hours);
+                return hours;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public int readValidInternshipMonths(String message, InternEmployeeValidator validator) {
+        while (true) {
+            int months = readInt(message);
+            try {
+                validator.validateInternshipMonths(months);
+                return months;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public String readValidUniversity(String message, InternEmployeeValidator validator) {
+        while (true) {
+            String university = readNonEmptyString(message);
+            try {
+                validator.validateUniversity(university);
+                return university;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public EmployeeBaseData readBaseEmployeeData(EmployeeValidator validator) {
+        String nameSurname = readValidNameSurname("Введіть ім'я та прізвище співробітника: ", validator);
+        int age = readValidAge("Введіть вік співробітника: ", validator);
+        double salary = readValidSalary("Введіть заробітну плату для співробітника: ", validator);
+        Position position = readPosition();
+
+        return new EmployeeBaseData(nameSurname, age, salary, position);
     }
 }
