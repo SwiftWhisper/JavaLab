@@ -1,0 +1,71 @@
+package sumdu.edu.ua;
+
+import sumdu.edu.ua.validators.EmployeeValidator;
+import sumdu.edu.ua.validators.InternEmployeeValidator;
+
+public class InternEmployee extends Employee {
+    private static final InternEmployeeValidator VALIDATOR = new InternEmployeeValidator();
+
+    private String university;
+    private int internshipMonths;
+
+
+    public InternEmployee() {
+        super();
+    }
+
+    public InternEmployee(String nameSurname, int age, double salary, Position position,
+                          String university, int internshipMonths) {
+        super(nameSurname, age, salary, position);
+        setUniversity(university);
+        setInternshipMonths(internshipMonths);
+    }
+
+    public InternEmployee(Employee other, String university, int internshipMonths) {
+        super(other);
+        setUniversity(university);
+        setInternshipMonths(internshipMonths);
+    }
+
+    public InternEmployee(InternEmployee other) {
+        super(other);
+        this.university = other.university;
+        this.internshipMonths = other.internshipMonths;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public int getInternshipMonths() {
+        return internshipMonths;
+    }
+
+    public void setUniversity(String university) {
+        VALIDATOR.validateUniversity(university);
+        this.university = university;
+    }
+
+    public void setInternshipMonths(int internshipMonths) {
+        VALIDATOR.validateInternshipMonths(internshipMonths);
+        this.internshipMonths = internshipMonths;
+    }
+
+    @Override
+    protected EmployeeValidator getValidator() {
+        return VALIDATOR;
+    }
+
+    @Override
+    public String toString() {
+        return "InternEmployee{" +
+                "id=" + id +
+                ", nameSurname='" + nameSurname + '\'' +
+                ", age=" + age +
+                ", salary=" + salary +
+                ", position=" + position +
+                ", university='" + university + '\'' +
+                ", internshipMonths=" + internshipMonths +
+                '}';
+    }
+}
