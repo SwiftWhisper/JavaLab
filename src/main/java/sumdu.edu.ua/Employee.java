@@ -1,8 +1,9 @@
 package sumdu.edu.ua;
 
+import sumdu.edu.ua.validators.EmployeeValidator;
 import java.util.Objects;
 
-public class Employee {
+public abstract class Employee {
     protected int id;
     protected static int nextId=1;
     protected String nameSurname;
@@ -11,6 +12,8 @@ public class Employee {
     protected Position position;
 
     private static int empCount = 0;
+
+    protected abstract EmployeeValidator getValidator();
 
     public static int getEmpCount() {
         return empCount;
@@ -45,18 +48,8 @@ public class Employee {
         return nameSurname;
     }
 
-    public static void validateNameSurname (String nameSurname) {
-        if (nameSurname == null || nameSurname.isBlank()) {
-            throw new IllegalArgumentException("Помилка: ви не ввели ім'я та прізвище співробітника.");
-        }
-
-        if (!nameSurname.matches("[a-zA-Zа-яА-ЯіїєІЇЄ'\\- ]+")) {
-            throw new IllegalArgumentException("Помилка: ім'я може містити тільки букви.");
-        }
-    }
-
     public void setNameSurname(String nameSurname) {
-        validateNameSurname(nameSurname);
+        getValidator().validateNameSurname(nameSurname);
         this.nameSurname = nameSurname;
     }
 
@@ -64,12 +57,8 @@ public class Employee {
         return age;
     }
 
-    public static void validateAge(int age) {
-        if(age < 18){throw new IllegalArgumentException("Співробітник має бути повнолітнім!");}
-    }
-
     public void setAge(int age) {
-        validateAge(age);
+        getValidator().validateAge(age);
         this.age = age;
     }
 
@@ -77,12 +66,8 @@ public class Employee {
         return salary;
     }
 
-    public static void validateSalary(double salary) {
-        if(salary < 0){throw new IllegalArgumentException("Помилка: заробітня плата не може бути від'ємною!");}
-    }
-
     public void setSalary(double salary) {
-        validateSalary(salary);
+        getValidator().validateSalary(salary);
         this.salary = salary;
     }
 
@@ -90,14 +75,8 @@ public class Employee {
         return position;
     }
 
-    public static void validatePosition(Position position) {
-        if (position == null) {
-            throw new IllegalArgumentException("Помилка: ви не ввели посаду співробітника.");
-        }
-    }
-
     public void setPosition(Position position) {
-        validatePosition(position);
+        getValidator().validatePosition(position);
         this.position = position;
     }
 

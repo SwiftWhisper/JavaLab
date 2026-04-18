@@ -1,6 +1,11 @@
 package sumdu.edu.ua;
 
+import sumdu.edu.ua.validators.EmployeeValidator;
+import sumdu.edu.ua.validators.ContractEmployeeValidator;
+
 public class ContractEmployee extends Employee{
+    private static final ContractEmployeeValidator VALIDATOR = new ContractEmployeeValidator();
+
     private int durationOfContract;
 
     public ContractEmployee() {
@@ -26,13 +31,15 @@ public class ContractEmployee extends Employee{
         return durationOfContract;
     }
 
-    public static void validateDurationOfContract(int durationOfContract) {
-        if(durationOfContract <= 0){throw new IllegalArgumentException("Помилка: довжина контракту не може бути меншою 1 року!");}
-    }
 
     public void setDurationOfContract(int durationOfContract){
-        validateDurationOfContract(durationOfContract);
+        VALIDATOR.validateDurationOfContract(durationOfContract);
         this.durationOfContract = durationOfContract;
+    }
+
+    @Override
+    protected EmployeeValidator getValidator() {
+        return VALIDATOR;
     }
 
     @Override

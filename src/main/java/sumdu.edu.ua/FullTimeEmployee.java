@@ -1,6 +1,11 @@
 package sumdu.edu.ua;
 
+import sumdu.edu.ua.validators.EmployeeValidator;
+import sumdu.edu.ua.validators.FullTimeEmployeeValidator;
+
 public class FullTimeEmployee extends Employee{
+    private static final FullTimeEmployeeValidator VALIDATOR = new FullTimeEmployeeValidator();
+
     private int yearsInCompany;
 
     public FullTimeEmployee() {
@@ -26,13 +31,14 @@ public class FullTimeEmployee extends Employee{
         return yearsInCompany;
     }
 
-    public static void validateYearsInCompany(int yearsInCompany){
-        if(yearsInCompany < 0){throw new IllegalArgumentException("Помилка: кількість років не може бути від'ємною!");}
+    public void setYearsInCompany(int years){
+        VALIDATOR.validateYearsInCompany(years);
+        this.yearsInCompany = yearsInCompany;
     }
 
-    public void setYearsInCompany(int years){
-        validateYearsInCompany(years);
-        this.yearsInCompany = yearsInCompany;
+    @Override
+    protected EmployeeValidator getValidator() {
+        return VALIDATOR;
     }
 
     @Override
