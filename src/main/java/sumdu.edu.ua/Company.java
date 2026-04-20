@@ -48,11 +48,25 @@ public class Company {
 
     @Override
     public String toString() {
-        return "Company{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", employees=" + employees +
-                '}';
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Company {\n");
+        sb.append("  id = ").append(id).append("\n");
+        sb.append("  name = '").append(name).append("'\n");
+        sb.append("  employees = [\n");
+
+        if (employees.isEmpty()) {
+            sb.append("    (немає співробітників)\n");
+        } else {
+            for (Employee e : employees) {
+                sb.append("    ").append(e).append("\n");
+            }
+        }
+
+        sb.append("  ]\n");
+        sb.append("}");
+
+        return sb.toString();
     }
 }
 
