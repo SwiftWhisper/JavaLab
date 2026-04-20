@@ -47,7 +47,8 @@ public class ConsoleInput {
         }
     }
 
-    public String readValidNameSurname(String message, EmployeeValidator validator) {
+    public String readValidNameSurname(EmployeeValidator validator) {
+        String message = "Введіть ім'я та прізвище співробітника: ";
         while (true) {
             String nameSurname = readNonEmptyString(message);
             try {
@@ -78,7 +79,8 @@ public class ConsoleInput {
         }
     }
 
-    public int readValidAge(String message, EmployeeValidator validator) {
+    public int readValidAge(EmployeeValidator validator) {
+        String message = "Введіть вік співробітника: ";
         while (true) {
             int age = readInt(message);
             try {
@@ -90,7 +92,8 @@ public class ConsoleInput {
         }
     }
 
-    public double readValidSalary(String message, EmployeeValidator validator) {
+    public double readValidSalary(EmployeeValidator validator) {
+        String message = "Введіть заробітню плату для співробітника";
         while (true) {
             double salary = readDouble(message);
             try {
@@ -102,7 +105,8 @@ public class ConsoleInput {
         }
     }
 
-    public int readValidYearsInCompany(String message, FullTimeEmployeeValidator validator) {
+    public int readValidYearsInCompany(FullTimeEmployeeValidator validator) {
+        String message = "Введіть кількість років праці співробітника в компанії: ";
         while (true) {
             int years = readInt(message);
             try {
@@ -114,7 +118,8 @@ public class ConsoleInput {
         }
     }
 
-    public int readValidDurationOfContract(String message, ContractEmployeeValidator validator) {
+    public int readValidDurationOfContract(ContractEmployeeValidator validator) {
+        String message = "Введіть довжину контракту для співробітника: ";
         while (true) {
             int years = readInt(message);
             try {
@@ -126,7 +131,8 @@ public class ConsoleInput {
         }
     }
 
-    public int readValidHoursInDay(String message, PartTimeEmployeeValidator validator) {
+    public int readValidHoursInDay(PartTimeEmployeeValidator validator) {
+        String message = "Введіть скільки в день буде працювати цей співробітник (мінімум 4): ";
         while (true) {
             int hours = readInt(message);
             try {
@@ -138,7 +144,8 @@ public class ConsoleInput {
         }
     }
 
-    public int readValidInternshipMonths(String message, InternEmployeeValidator validator) {
+    public int readValidInternshipMonths(InternEmployeeValidator validator) {
+        String message = "Введіть кількість місяців стажування: ";
         while (true) {
             int months = readInt(message);
             try {
@@ -150,7 +157,8 @@ public class ConsoleInput {
         }
     }
 
-    public String readValidUniversity(String message, InternEmployeeValidator validator) {
+    public String readValidUniversity(InternEmployeeValidator validator) {
+        String message = "Введіть назву університету стажера: ";
         while (true) {
             String university = readNonEmptyString(message);
             try {
@@ -162,12 +170,96 @@ public class ConsoleInput {
         }
     }
 
-    public EmployeeBaseData readBaseEmployeeData(EmployeeValidator validator) {
-        String nameSurname = readValidNameSurname("Введіть ім'я та прізвище співробітника: ", validator);
-        int age = readValidAge("Введіть вік співробітника: ", validator);
-        double salary = readValidSalary("Введіть заробітну плату для співробітника: ", validator);
-        Position position = readPosition();
+    public EmployeeDto readFullTimeEmployeeDto() {
+        FullTimeEmployeeValidator validator = new FullTimeEmployeeValidator();
 
-        return new EmployeeBaseData(nameSurname, age, salary, position);
+        String nameSurname = readValidNameSurname(validator);
+        int age = readValidAge(validator);
+        double salary = readValidSalary(validator);
+        Position position = readPosition();
+        int yearsInCompany = readValidYearsInCompany(validator);
+
+        return new EmployeeDto(
+                "FULL_TIME",
+                nameSurname,
+                String.valueOf(age),
+                String.valueOf(salary),
+                position.name(),
+                String.valueOf(yearsInCompany),
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    public EmployeeDto readContractEmployeeDto() {
+        ContractEmployeeValidator validator = new ContractEmployeeValidator();
+
+        String nameSurname = readValidNameSurname(validator);
+        int age = readValidAge(validator);
+        double salary = readValidSalary(validator);
+        Position position = readPosition();
+        int durationOfContract = readValidDurationOfContract(validator);
+
+        return new EmployeeDto(
+                "CONTRACT",
+                nameSurname,
+                String.valueOf(age),
+                String.valueOf(salary),
+                position.name(),
+                null,
+                String.valueOf(durationOfContract),
+                null,
+                null,
+                null
+        );
+    }
+
+    public EmployeeDto readPartTimeEmployeeDto() {
+        PartTimeEmployeeValidator validator = new PartTimeEmployeeValidator();
+
+        String nameSurname = readValidNameSurname(validator);
+        int age = readValidAge(validator);
+        double salary = readValidSalary(validator);
+        Position position = readPosition();
+        int hoursInDay = readValidHoursInDay(validator);
+
+        return new EmployeeDto(
+                "PART_TIME",
+                nameSurname,
+                String.valueOf(age),
+                String.valueOf(salary),
+                position.name(),
+                null,
+                null,
+                String.valueOf(hoursInDay),
+                null,
+                null
+        );
+    }
+
+    public EmployeeDto readInternEmployeeDto() {
+        InternEmployeeValidator validator = new InternEmployeeValidator();
+
+        String nameSurname = readValidNameSurname(validator);
+        int age = readValidAge(validator);
+        double salary = readValidSalary(validator);
+        Position position = readPosition();
+        String university = readValidUniversity(validator);
+        int internshipMonths = readValidInternshipMonths(validator);
+
+        return new EmployeeDto(
+                "INTERN",
+                nameSurname,
+                String.valueOf(age),
+                String.valueOf(salary),
+                position.name(),
+                null,
+                null,
+                null,
+                String.valueOf(internshipMonths),
+                university
+        );
     }
 }

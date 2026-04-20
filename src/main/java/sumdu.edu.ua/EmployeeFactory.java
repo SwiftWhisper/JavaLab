@@ -10,10 +10,16 @@ import sumdu.edu.ua.validators.*;
  * класів Employee та його похідних.
  */
 public class EmployeeFactory {
-    private final ConsoleInput input;
 
-    public EmployeeFactory(ConsoleInput input) {
-        this.input = input;
+    public Employee createEmployee(EmployeeDto dto) {
+        EmployeeType type = parseEmployeeType(dto.getType());
+
+        return switch (type) {
+            case FULL_TIME -> createFullTimeEmployee(dto);
+            case CONTRACT -> createContractEmployee(dto);
+            case PART_TIME -> createPartTimeEmployee(dto);
+            case INTERN -> createInternEmployee(dto);
+        };
     }
 
     /**
@@ -24,13 +30,21 @@ public class EmployeeFactory {
      *
      * @return створений штатний співробітник
      */
-    public FullTimeEmployee createFullTimeEmployee() {
+    public FullTimeEmployee createFullTimeEmployee(EmployeeDto dto) {
         FullTimeEmployeeValidator validator = new FullTimeEmployeeValidator();
 
-        EmployeeBaseData baseData = input.readBaseEmployeeData(validator);
-        int years = input.readValidYearsInCompany("Введіть кількість років праці співробітника в компанії: ", validator);
+        String name = dto.getNameSurname();
+        int age = parseInt(dto.getAge(), "age");
+        double salary = parseDouble(dto.getSalary(), "salary");
+        Position position = parsePosition(dto.getPosition());
+        int years = parseInt(dto.getYearsInCompany(), "yearsInCompany");
 
-        return new FullTimeEmployee(baseData.getNameSurname(), baseData.getAge(), baseData.getSalary(), baseData.getPosition(), years);
+        validator.validateNameSurname(name);
+        validator.validateAge(age);
+        validator.validateSalary(salary);
+        validator.validateYearsInCompany(years);
+
+        return new FullTimeEmployee(name, age, salary, position, years);
     }
 
     /**
@@ -41,13 +55,21 @@ public class EmployeeFactory {
      *
      * @return створений контрактний співробітник
      */
-    public ContractEmployee createContractEmployee() {
+    public ContractEmployee createContractEmployee(EmployeeDto dto) {
         ContractEmployeeValidator validator = new ContractEmployeeValidator();
 
-        EmployeeBaseData baseData = input.readBaseEmployeeData(validator);
-        int durationOfContract = input.readValidDurationOfContract("Введіть довжину контракту для співробітника: ", validator);
+        String name = dto.getNameSurname();
+        int age = parseInt(dto.getAge(), "age");
+        double salary = parseDouble(dto.getSalary(), "salary");
+        Position position = parsePosition(dto.getPosition());
+        int duration = parseInt(dto.getDurationOfContract(), "durationOfContract");
 
-        return new ContractEmployee(baseData.getNameSurname(), baseData.getAge(), baseData.getSalary(), baseData.getPosition(), durationOfContract);
+        validator.validateNameSurname(name);
+        validator.validateAge(age);
+        validator.validateSalary(salary);
+        validator.validateDurationOfContract(duration);
+
+        return new ContractEmployee(name, age, salary, position, duration);
     }
 
     /**
@@ -58,13 +80,21 @@ public class EmployeeFactory {
      *
      * @return створений працівник з неповною зайнятістю
      */
-    public PartTimeEmployee createPartTimeEmployee() {
+    public PartTimeEmployee createPartTimeEmployee(EmployeeDto dto) {
         PartTimeEmployeeValidator validator = new PartTimeEmployeeValidator();
 
-        EmployeeBaseData baseData = input.readBaseEmployeeData(validator);
-        int hoursInDay = input.readValidHoursInDay("Введіть скільки в день буде працювати цей співробітник (мінімум 4): ", validator);
+        String name = dto.getNameSurname();
+        int age = parseInt(dto.getAge(), "age");
+        double salary = parseDouble(dto.getSalary(), "salary");
+        Position position = parsePosition(dto.getPosition());
+        int hours = parseInt(dto.getHoursInDay(), "hoursInDay");
 
-        return new PartTimeEmployee(baseData.getNameSurname(), baseData.getAge(), baseData.getSalary(), baseData.getPosition(), hoursInDay);
+        validator.validateNameSurname(name);
+        validator.validateAge(age);
+        validator.validateSalary(salary);
+        validator.validateHoursInDay(hours);
+
+        return new PartTimeEmployee(name, age, salary, position, hours);
     }
     /**
      * Створює стажера (InternEmployee).
@@ -74,13 +104,57 @@ public class EmployeeFactory {
      *
      * @return створений стажер
      */
-    public InternEmployee createInternEmployee() {
+    public InternEmployee createInternEmployee(EmployeeDto dto) {
         InternEmployeeValidator validator = new InternEmployeeValidator();
 
-        EmployeeBaseData baseData = input.readBaseEmployeeData(validator);
-        String university = input.readValidUniversity("Введіть назву університета стажера: ", validator);
-        int internshipMonths = input.readValidInternshipMonths("Введіть кількість місяців стажування: ", validator);
+        String name = dto.getNameSurname();
+        int age = parseInt(dto.getAge(), "age");
+        double salary = parseDouble(dto.getSalary(), "salary");
+        Position position = parsePosition(dto.getPosition());
+        String university = dto.getUniversity();
+        int months = parseInt(dto.getInternshipMonths(), "internshipMonths");
 
-        return new InternEmployee(baseData.getNameSurname(), baseData.getAge(), baseData.getSalary(), baseData.getPosition(), university, internshipMonths);
+        validator.validateNameSurname(name);
+        validator.validateAge(age);
+        validator.validateSalary(salary);
+        validator.validateUniversity(university);
+        validator.validateInternshipMonths(months);
+
+        return new InternEmployee(name, age, salary, position, university, months);
+    }
+    // ========================
+    // Parsing methods
+    // ========================
+
+    private int parseInt(String value, String fieldName) {
+        try {
+            return Integer.parseInt(value);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Поле '" + fieldName + "' повинно бути цілим числом.");
+        }
+    }
+
+    private double parseDouble(String value, String fieldName) {
+        try {
+            return Double.parseDouble(value);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Поле '" + fieldName + "' повинно бути числом.");
+        }
+    }
+
+    private EmployeeType parseEmployeeType(String value) {
+        try {
+            return EmployeeType.valueOf(value.toUpperCase());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Некоректний тип працівника: " + value);
+        }
+    }
+
+    private Position parsePosition(String value) {
+        try {
+            return Position.valueOf(value.toUpperCase());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Некоректна посада: " + value);
+        }
     }
 }
