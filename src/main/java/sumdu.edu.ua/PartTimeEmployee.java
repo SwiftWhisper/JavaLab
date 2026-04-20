@@ -1,5 +1,7 @@
 package sumdu.edu.ua;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import sumdu.edu.ua.validators.EmployeeValidator;
 import sumdu.edu.ua.validators.PartTimeEmployeeValidator;
 
@@ -34,6 +36,17 @@ public class PartTimeEmployee extends Employee {
     public void setHoursInDay(int hoursInDay) {
         VALIDATOR.validateHoursInDay(hoursInDay);
         this.hoursInDay = hoursInDay;
+    }
+
+    @Override 
+    public void toJson(ObjectNode node) {
+        super.toJson(node);
+        node.put("hoursInDay", hoursInDay);
+    }
+
+    @Override
+    public EmployeeType getType() {
+        return EmployeeType.PART_TIME;
     }
 
     @Override

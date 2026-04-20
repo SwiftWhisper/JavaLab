@@ -1,5 +1,7 @@
 package sumdu.edu.ua;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import sumdu.edu.ua.validators.EmployeeValidator;
 import sumdu.edu.ua.validators.InternEmployeeValidator;
 
@@ -49,6 +51,18 @@ public class InternEmployee extends Employee {
     public void setInternshipMonths(int internshipMonths) {
         VALIDATOR.validateInternshipMonths(internshipMonths);
         this.internshipMonths = internshipMonths;
+    }
+
+    @Override 
+    public void toJson(ObjectNode node) {
+        super.toJson(node);
+        node.put("internshipMonths",internshipMonths);
+        node.put("university", university);
+    }
+
+    @Override
+    public EmployeeType getType() {
+        return EmployeeType.INTERN;
     }
 
     @Override

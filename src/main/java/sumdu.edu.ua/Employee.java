@@ -1,5 +1,7 @@
 package sumdu.edu.ua;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import sumdu.edu.ua.validators.EmployeeValidator;
 import java.util.Objects;
 
@@ -14,6 +16,7 @@ public abstract class Employee {
     private static int empCount = 0;
 
     protected abstract EmployeeValidator getValidator();
+    public abstract EmployeeType getType();
 
     public static int getEmpCount() {
         return empCount;
@@ -78,6 +81,14 @@ public abstract class Employee {
     public void setPosition(Position position) {
         getValidator().validatePosition(position);
         this.position = position;
+    }
+
+    public void toJson(ObjectNode node) {
+        node.put("type", getType().name());
+        node.put("nameSurname", getNameSurname());
+        node.put("age", getAge());
+        node.put("salary", getSalary());
+        node.put("position", getPosition().name());
     }
 
     @Override

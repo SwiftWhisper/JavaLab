@@ -1,5 +1,7 @@
 package sumdu.edu.ua;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import sumdu.edu.ua.validators.EmployeeValidator;
 import sumdu.edu.ua.validators.ContractEmployeeValidator;
 
@@ -35,6 +37,17 @@ public class ContractEmployee extends Employee{
     public void setDurationOfContract(int durationOfContract){
         VALIDATOR.validateDurationOfContract(durationOfContract);
         this.durationOfContract = durationOfContract;
+    }
+
+    @Override 
+    public void toJson(ObjectNode node) {
+        super.toJson(node);
+        node.put("durationOfContract", durationOfContract);
+    }
+
+    @Override
+    public EmployeeType getType() {
+        return EmployeeType.CONTRACT;
     }
 
     @Override

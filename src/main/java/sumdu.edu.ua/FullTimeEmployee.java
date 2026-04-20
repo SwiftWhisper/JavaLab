@@ -1,5 +1,7 @@
 package sumdu.edu.ua;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import sumdu.edu.ua.validators.EmployeeValidator;
 import sumdu.edu.ua.validators.FullTimeEmployeeValidator;
 
@@ -34,6 +36,17 @@ public class FullTimeEmployee extends Employee{
     public void setYearsInCompany(int years){
         VALIDATOR.validateYearsInCompany(years);
         this.yearsInCompany = yearsInCompany;
+    }
+
+    @Override 
+    public void toJson(ObjectNode node) {
+        super.toJson(node);
+        node.put("yearsInCompany", yearsInCompany);
+    }
+    
+    @Override
+    public EmployeeType getType() {
+        return EmployeeType.FULL_TIME;
     }
 
     @Override
