@@ -37,14 +37,19 @@ public class Main {
             System.out.println("1. Вивести всі компанії.");
             System.out.println("2. Створити нову компанію.");
             System.out.println("3. Додати співробітників в конкретну компанію.");
-            System.out.println("4. Зчитати інформацію про компанії з json.");
-            System.out.println("5. Завершити програму.");
+            System.out.println("4. Зчитати інформацію про компанії з txt.");
+            System.out.println("5. Зчитати інформацію про компанії з json.");
+            System.out.println("6. Завершити програму.");
             System.out.println();
 
             int opt = input.readInt("Ваш вибір: ");
             switch (opt) {
                 case 1:
-                    System.out.println(companies);
+                    if (companies.isEmpty()) {
+                        System.out.println("Список компаній порожній.");
+                    } else {
+                        System.out.println(companies);
+                    }
                     break;
                 case 2:
                     String name = input.readValidName(companyValidator);
@@ -55,21 +60,29 @@ public class Main {
                     showEmpCreationMenu(newCompany, input, empFactory);
                     break;
                 case 3:
-                    System.out.println(companies);
-                    int id = input.readInt("Введіть ID компанії: ");
-                    Company selectedCompany = CompanyUtils.findById(companies, id);
-                    if (selectedCompany != null) {
-                    showEmpCreationMenu(selectedCompany, input, empFactory);
-                    }
-                    else {
-                        System.out.println("Компанії з таким ID немає.");
+                    if (companies.isEmpty()) {
+                        System.out.println("Список компаній порожній.");
+                    } else {
+                        System.out.println(companies);
+                        int id = input.readInt("Введіть ID компанії: ");
+                        Company selectedCompany = CompanyUtils.findById(companies, id);
+
+                        if (selectedCompany != null) {
+                            showEmpCreationMenu(selectedCompany, input, empFactory);
+                        } else {
+                            System.out.println("Компанії з таким ID немає.");
+                        }
                     }
                     break;
                 case 4:
+                    TxtImportService txtImportService = new TxtImportService();
+                    txtImportService.loadCompanies("companies.txt", companies);
+                    break;
+                case 5:
                     CompanyJsonService companyJsonService = new CompanyJsonService();
                     companyJsonService.loadCompanies("companies.json", companies);
                     break;
-                case 5:
+                case 6:
                     CompaniesJsonWriter writer = new CompaniesJsonWriter(); 
                     writer.saveToFile("outputCompanies.json", companies);
                     return;
