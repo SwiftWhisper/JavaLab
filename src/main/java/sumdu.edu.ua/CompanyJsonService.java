@@ -6,6 +6,7 @@ import java.util.List;
 public class CompanyJsonService {
     private final JsonEmployeeMapper mapper = new JsonEmployeeMapper();
     private final EmployeeFactory factory = new EmployeeFactory();
+    private final CompanyValidator companyValidator = new CompanyValidator();
 
     public void loadCompanies(String filePath, List<Company> companies) {
         try {
@@ -62,11 +63,7 @@ public class CompanyJsonService {
         }
 
         String companyName = companyNode.get("name").asText();
-
-        if (companyName == null || companyName.isBlank()) {
-            throw new IllegalArgumentException("Назва компанії не може бути порожньою.");
-        }
-
+        companyValidator.validateName(companyName);
         return companyName;
     }
 

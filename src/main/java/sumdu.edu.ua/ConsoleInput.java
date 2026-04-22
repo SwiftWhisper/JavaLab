@@ -47,6 +47,19 @@ public class ConsoleInput {
         }
     }
 
+    public String readValidName(CompanyValidator validator) {
+        String message = "Введіть назву компанії: ";
+        while (true) {
+            String name = readNonEmptyString(message);
+            try {
+                validator.validateName(name);
+                return name;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
     public String readValidNameSurname(EmployeeValidator validator) {
         String message = "Введіть ім'я та прізвище співробітника: ";
         while (true) {

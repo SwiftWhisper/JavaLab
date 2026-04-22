@@ -2,6 +2,16 @@ package sumdu.edu.ua;
 
 import java.util.Scanner;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
+
+import java.io.File;
+import java.io.IOException;
+
 public class Main {
     /**
      * Точка входу в програму.
@@ -11,30 +21,57 @@ public class Main {
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
         ConsoleInput input = new ConsoleInput(scanner);
-        EmployeeFactory empFactory = new EmployeeFactory(input);
+        EmployeeFactory empFactory = new EmployeeFactory();
 
-        Company company = new Company("Google");
+        List<Company> companies = new ArrayList<>();
+        companies.add(new Company("Google"));
 
-        showMainMenu(company, input, empFactory);
+        showMainMenu(companies, input, empFactory);
     }
 
-    private static void showMainMenu(Company company, ConsoleInput input, EmployeeFactory empFactory) {
+    private static void showMainMenu(List<Company> companies, ConsoleInput input, EmployeeFactory empFactory) {
+        CompanyValidator companyValidator = new CompanyValidator();
+
         while (true) {
             System.out.println("Виберіть дію обравши її номер:");
-            System.out.println("1. Додати нового співробітника.");
-            System.out.println("2. Вивести інформацію про компанію.");
-            System.out.println("3. Завершити програму.");
+            System.out.println("1. Вивести всі компанії.");
+            System.out.println("2. Створити нову компанію.");
+            System.out.println("3. Додати співробітників в конкретну компанію.");
+            System.out.println("4. Зчитати інформацію про компанії з json.");
+            System.out.println("5. Завершити програму.");
             System.out.println();
 
             int opt = input.readInt("Ваш вибір: ");
             switch (opt) {
                 case 1:
-                    showEmpCreationMenu(company, input, empFactory);
+                    System.out.println(companies);
                     break;
                 case 2:
-                    System.out.println(company);
+                    String name = input.readValidName(companyValidator);
+                    Company newCompany = new Company(name);
+                    companies.add(newCompany);
+
+                    System.out.println("Створення співробітників у нову компанію.");
+                    showEmpCreationMenu(newCompany, input, empFactory);
                     break;
                 case 3:
+                    System.out.println(companies);
+                    int id = input.readInt("Введіть ID компанії: ");
+                    Company selectedCompany = CompanyUtils.findById(companies, id);
+                    if (selectedCompany != null) {
+                    showEmpCreationMenu(selectedCompany, input, empFactory);
+                    }
+                    else {
+                        System.out.println("Компанії з таким ID немає.");
+                    }
+                    break;
+                case 4:
+                    CompanyJsonService companyJsonService = new CompanyJsonService();
+                    companyJsonService.loadCompanies("companies.json", companies);
+                    break;
+                case 5:
+                    CompaniesJsonWriter writer = new CompaniesJsonWriter(); 
+                    writer.saveToFile("outputCompanies.json", companies);
                     return;
                 default:
                     System.out.println("Такої опції немає, спробуйте ще раз.");
@@ -55,22 +92,30 @@ public class Main {
             int opt = input.readInt("Ваш вибір: ");
 
             switch (opt) {
-                case 1:
-                    company.addEmployee(empFactory.createFullTimeEmployee());
+                case 1: {
+                    EmployeeDto dto = input.readFullTimeEmployeeDto();
+                    company.addEmployee(empFactory.createEmployee(dto));
                     System.out.println();
                     break;
-                case 2:
-                    company.addEmployee(empFactory.createContractEmployee());
+                }
+                case 2: {
+                    EmployeeDto dto = input.readContractEmployeeDto();
+                    company.addEmployee(empFactory.createEmployee(dto));
                     System.out.println();
                     break;
-                case 3:
-                    company.addEmployee(empFactory.createPartTimeEmployee());
+                }
+                case 3: {
+                    EmployeeDto dto = input.readPartTimeEmployeeDto();
+                    company.addEmployee(empFactory.createEmployee(dto));
                     System.out.println();
                     break;
-                case 4:
-                    company.addEmployee(empFactory.createInternEmployee());
+                }
+                case 4: {
+                    EmployeeDto dto = input.readInternEmployeeDto();
+                    company.addEmployee(empFactory.createEmployee(dto));
                     System.out.println();
                     break;
+                }
                 case 5:
                     return;
                 default:
