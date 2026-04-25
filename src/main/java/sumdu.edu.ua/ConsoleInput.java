@@ -92,6 +92,25 @@ public class ConsoleInput {
         }
     }
 
+    public CompareType readCompareType() {
+        CompareType[] compareTypes = CompareType.values();
+        while (true) {
+            System.out.println("Оберіть тип порівняння:");
+
+            for (int i = 0; i < compareTypes.length; i++) {
+                System.out.println((i + 1) + ". " + compareTypes[i]);
+            }
+
+            int choice = readInt("Ваш вибір: ");
+
+            if (choice >= 1 && choice <= compareTypes.length) {
+                return compareTypes[choice - 1];
+            }
+
+            System.out.println("Помилка: некоректний тип порівняння.");
+        }
+    }
+
     public int readValidAge(EmployeeValidator validator) {
         String message = "Введіть вік співробітника: ";
         while (true) {
