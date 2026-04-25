@@ -154,18 +154,18 @@ public class Main {
             switch (opt) {
                 case 1: {
                     String searchedNameSurname = input.readNonEmptyString("Введіть ім'я або його частину для пошуку: ");
-                    searchResult = searchByNameSurname(searchedNameSurname, company);
+                    searchResult = company.searchByNameSurname(searchedNameSurname);
                     break;
                 }
                 case 2: {
                     Position searchedPosition = input.readPosition();
-                    searchResult = searchByPosition(searchedPosition, company);
+                    searchResult = company.searchByPosition(searchedPosition);
                     break;
                 }
                 case 3: {
                     CompareType compareType = input.readCompareType();
                     int searchedAge = input.readInt("Введіть значення віку для порівняння: ");
-                    searchResult = searchByAge(searchedAge, compareType, company);
+                    searchResult = company.searchByAge(searchedAge, compareType);
                     break;
                 }
                 case 4:{
@@ -185,53 +185,6 @@ public class Main {
             }
             System.out.println();
         }
-    }
-
-    public static List<Employee> searchByNameSurname(String nameSurname, Company company) {
-        List<Employee> result = new ArrayList<>();
-        List<Employee> employees = company.getEmployees();
-        String searchedNameSurname = nameSurname.toLowerCase();
-
-        for(Employee e : employees) {
-            if (e.getNameSurname().toLowerCase().contains(searchedNameSurname)) {
-                result.add(e);
-            }
-        }
-        return result;
-    }
-
-    public static List<Employee> searchByPosition(Position searchedPosition, Company company) {
-        List<Employee> result = new ArrayList<>();
-        List<Employee> employees = company.getEmployees();
-
-        for(Employee e : employees) {
-            if (e.getPosition().equals(searchedPosition)) {
-                result.add(e);
-            }
-        }
-        return result;
-    }
-
-    public static List<Employee> searchByAge(int searchedAge, CompareType type, Company company) {
-        List<Employee> result = new ArrayList<>();
-        List<Employee> employees = company.getEmployees();
-
-        for(Employee e : employees) {
-            switch (type) {
-                case GREATER:
-                    if (e.getAge() > searchedAge) result.add(e);
-                    break;
-
-                case LESS:
-                    if (e.getAge() < searchedAge) result.add(e);
-                    break;
-
-                case EQUAL:
-                    if (e.getAge() == searchedAge) result.add(e);
-                    break;
-            }
-        }
-        return result;
     }
 
     private static Company chooseCompany(List<Company> companies, ConsoleInput input) {

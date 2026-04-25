@@ -46,6 +46,50 @@ public class Company {
         return id;
     }
 
+    public List<Employee> searchByNameSurname(String nameSurname) {
+        List<Employee> result = new ArrayList<>();
+        String searchedNameSurname = nameSurname.toLowerCase();
+
+        for(Employee e : employees) {
+            if (e.getNameSurname().toLowerCase().contains(searchedNameSurname)) {
+                result.add(e);
+            }
+        }
+        return result;
+    }
+    
+    public List<Employee> searchByAge(int searchedAge, CompareType type) {
+        List<Employee> result = new ArrayList<>();
+
+        for(Employee e : employees) {
+            switch (type) {
+                case GREATER:
+                    if (e.getAge() > searchedAge) result.add(e);
+                    break;
+
+                case LESS:
+                    if (e.getAge() < searchedAge) result.add(e);
+                    break;
+
+                case EQUAL:
+                    if (e.getAge() == searchedAge) result.add(e);
+                    break;
+            }
+        }
+        return result;
+    }
+
+    public List<Employee> searchByPosition(Position searchedPosition) {
+        List<Employee> result = new ArrayList<>();
+
+        for(Employee e : employees) {
+            if (e.getPosition() == searchedPosition) {
+                result.add(e);
+            }
+        }
+        return result;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
