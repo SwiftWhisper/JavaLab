@@ -33,8 +33,8 @@ public class FullTimeEmployee extends Employee{
         return yearsInCompany;
     }
 
-    public void setYearsInCompany(int years){
-        VALIDATOR.validateYearsInCompany(years);
+    public void setYearsInCompany(int yearsInCompany){
+        VALIDATOR.validateYearsInCompany(yearsInCompany);
         this.yearsInCompany = yearsInCompany;
     }
 
