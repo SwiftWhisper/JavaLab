@@ -1,4 +1,4 @@
-package sumdu.edu.ua;
+package sumdu.edu.ua.model;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,6 +1,8 @@
-package sumdu.edu.ua;
+package sumdu.edu.ua.service.Json;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
+import sumdu.edu.ua.EmployeeDto;
 
 public class JsonEmployeeMapper {
 

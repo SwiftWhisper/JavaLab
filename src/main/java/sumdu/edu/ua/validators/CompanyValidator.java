@@ -1,4 +1,4 @@
-package sumdu.edu.ua;
+package sumdu.edu.ua.validators;
 
 public class CompanyValidator {
     public void validateName (String name) {

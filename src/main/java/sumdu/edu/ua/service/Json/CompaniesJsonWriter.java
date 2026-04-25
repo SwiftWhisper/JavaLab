@@ -1,15 +1,15 @@
-package sumdu.edu.ua;
+package sumdu.edu.ua.service.Json;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
-
-import java.io.File;
-import java.io.IOException;
+import sumdu.edu.ua.model.Company;
+import sumdu.edu.ua.model.Employee;
 
 public class CompaniesJsonWriter {
 

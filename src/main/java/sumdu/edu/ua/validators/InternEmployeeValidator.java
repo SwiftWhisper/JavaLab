@@ -1,9 +1,7 @@
 package sumdu.edu.ua.validators;
 
-import sumdu.edu.ua.Position;
-
 public class InternEmployeeValidator extends EmployeeValidator {
-    public static void validateUniversity(String university) {
+    public void validateUniversity(String university) {
         if (university == null || university.trim().isEmpty()) {
             throw new IllegalArgumentException("Помилка: назва університету не може бути порожньою!");
         }
@@ -13,7 +11,7 @@ public class InternEmployeeValidator extends EmployeeValidator {
         }
     }
 
-    public static void validateInternshipMonths(int months) {
+    public void validateInternshipMonths(int months) {
         if (months <= 0 || months > 12) {
             throw new IllegalArgumentException("Помилка: тривалість стажування повинна бути від 1 до 12 місяців!");
         }

@@ -1,9 +1,10 @@
-package sumdu.edu.ua;
+package sumdu.edu.ua.service.Json;
+
+import java.io.File;
+import java.io.IOException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.io.IOException;
 
 public class JsonLoader {
     private static final ObjectMapper mapper = new ObjectMapper();

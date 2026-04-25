@@ -1,6 +1,17 @@
-package sumdu.edu.ua;
+package sumdu.edu.ua.service;
 
-import sumdu.edu.ua.validators.*;
+import sumdu.edu.ua.EmployeeDto;
+import sumdu.edu.ua.model.ContractEmployee;
+import sumdu.edu.ua.model.Employee;
+import sumdu.edu.ua.model.EmployeeType;
+import sumdu.edu.ua.model.FullTimeEmployee;
+import sumdu.edu.ua.model.InternEmployee;
+import sumdu.edu.ua.model.PartTimeEmployee;
+import sumdu.edu.ua.model.Position;
+import sumdu.edu.ua.validators.ContractEmployeeValidator;
+import sumdu.edu.ua.validators.FullTimeEmployeeValidator;
+import sumdu.edu.ua.validators.InternEmployeeValidator;
+import sumdu.edu.ua.validators.PartTimeEmployeeValidator;
 
 /**
  * Клас-фабрика для створення об'єктів співробітників.

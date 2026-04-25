@@ -1,8 +1,8 @@
-package sumdu.edu.ua;
+package sumdu.edu.ua.service;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
+
+import sumdu.edu.ua.model.Company;
 
 public class CompanyUtils {
 

@@ -1,4 +1,6 @@
-package sumdu.edu.ua;
+package sumdu.edu.ua.service.Txt;
+
+import sumdu.edu.ua.EmployeeDto;
 
 public class TxtEmployeeMapper {
 
