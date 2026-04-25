@@ -24,6 +24,6 @@ public abstract class EmployeeValidator {
         }
     }
 
-    public void validateAge(int age) {}
+    public abstract void validateAge(int age);
 }
 

@@ -57,11 +57,7 @@ public class PartTimeEmployee extends Employee {
     @Override
     public String toString() {
         return "PartTimeEmployee{" +
-                "id=" + id +
-                ", nameSurname='" + nameSurname + '\'' +
-                ", age=" + age +
-                ", salary=" + salary +
-                ", position=" + position +
+                baseToString() +
                 ", hoursInDay=" + hoursInDay +
                 '}';
     }

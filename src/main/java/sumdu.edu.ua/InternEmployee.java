@@ -73,11 +73,7 @@ public class InternEmployee extends Employee {
     @Override
     public String toString() {
         return "InternEmployee{" +
-                "id=" + id +
-                ", nameSurname='" + nameSurname + '\'' +
-                ", age=" + age +
-                ", salary=" + salary +
-                ", position=" + position +
+                baseToString() +
                 ", university='" + university + '\'' +
                 ", internshipMonths=" + internshipMonths +
                 '}';

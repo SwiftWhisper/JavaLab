@@ -57,11 +57,7 @@ public class FullTimeEmployee extends Employee{
     @Override
     public String toString() {
         return "FullTimeEmployee{" +
-            "id=" + id +
-            ", nameSurname='" + nameSurname + '\'' +
-            ", age=" + age +
-            ", salary=" + salary +
-            ", position=" + position +
+            baseToString() +
             ", yearsInCompany=" + yearsInCompany +
             '}';
     }

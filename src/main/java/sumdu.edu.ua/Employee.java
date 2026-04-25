@@ -91,15 +91,17 @@ public abstract class Employee {
         node.put("position", getPosition().name());
     }
 
+    protected String baseToString() {
+        return "id=" + id +
+                ", nameSurname='" + nameSurname + '\'' +
+                ", age=" + age +
+                ", salary=" + salary +
+                ", position=" + position;
+    }
+
     @Override
     public String toString() {
-        return "Employee{" +
-            "id=" + id +
-            ", nameSurname='" + nameSurname + '\'' +
-            ", age=" + age +
-            ", salary=" + salary +
-            ", position='" + position + '\'' +
-            '}';
+        return "Employee{" + baseToString() + '}';
     }
 
     @Override

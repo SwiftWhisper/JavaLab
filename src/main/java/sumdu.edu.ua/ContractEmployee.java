@@ -58,11 +58,7 @@ public class ContractEmployee extends Employee{
     @Override
     public String toString() {
         return "ContractEmployee{" +
-            "id=" + id +
-            ", nameSurname='" + nameSurname + '\'' +
-            ", age=" + age +
-            ", salary=" + salary +
-            ", position=" + position +
+            baseToString() +
             ", durationOfContract=" + durationOfContract +
             '}';
     }
