@@ -21,11 +21,24 @@ public class Main {
      */
     public static void main(String[] args){
         AppBootstrap bootstrap = new AppBootstrap();
-        AppContext app = bootstrap.initInMemory();
+
+        String configPath = null;
+        AppContext app;
+
+        if (args.length > 0) {
+            System.out.println("РОБОТА З ПРОГРАМОЮ З БАЗОЮ ДАНИХ");
+
+            configPath = args[0];
+            app = bootstrap.initWithDatabase(configPath);
+        }
+        else{
+            System.out.println("РОБОТА З ПРОГРАМАЮ БЕЗ БАЗИ ДАНИХ");
+
+            app = bootstrap.initInMemory();
+        }
 
         Scanner scanner = new Scanner(System.in);
         ConsoleInput input = new ConsoleInput(scanner);
-
 
         List<Company> companies = new ArrayList<>();
 
