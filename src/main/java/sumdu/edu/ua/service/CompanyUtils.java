@@ -8,7 +8,7 @@ public class CompanyUtils {
 
     public static Company findById(List<Company> companies, int id) {
         for (Company c : companies) {
-            if (c.getId() == id) {
+            if (c.getDisplayId() == id) {
                 return c;
             }
         }
