@@ -1,7 +1,5 @@
 package sumdu.edu.ua.app;
 
-import java.util.Properties;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import sumdu.edu.ua.repository.CompanyRepository;

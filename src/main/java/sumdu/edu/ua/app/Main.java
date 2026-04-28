@@ -37,12 +37,13 @@ public class Main {
         while (true) {
             System.out.println("Виберіть дію обравши її номер:");
             System.out.println("1. Вивести всі компанії.");
-            System.out.println("2. Створити нову компанію.");
-            System.out.println("3. Додати співробітників в конкретну компанію.");
-            System.out.println("4. Пошук співробітників.");
-            System.out.println("5. Зчитати інформацію про компанії з txt.");
-            System.out.println("6. Зчитати інформацію про компанії з json.");
-            System.out.println("7. Завершити програму.");
+            System.out.println("2. Вивести компанію з відсортованими співробітниками."); 
+            System.out.println("3. Створити нову компанію.");
+            System.out.println("4. Додати співробітників в конкретну компанію.");
+            System.out.println("5. Пошук співробітників.");
+            System.out.println("6. Зчитати інформацію про компанії з txt.");
+            System.out.println("7. Зчитати інформацію про компанії з json.");
+            System.out.println("8. Завершити програму.");
             System.out.println();
 
             int opt = input.readInt("Ваш вибір: ");
@@ -51,35 +52,43 @@ public class Main {
                     if (companies.isEmpty()) {
                         System.out.println("Список компаній порожній.");
                     } else {
-                        System.out.println(companies);
+                        for (Company company : companies) {
+                            System.out.println(company);
+                        }
                     }
                     break;
                 case 2:
+                    selectedCompany = chooseCompany(companies, input);
+                    if (selectedCompany != null) {
+                        System.out.println(selectedCompany.toFullString());
+                    }
+                    break;                   
+                case 3:
                     String companyName = input.readValidCompanyName();
                     Company newCompany = app.companyService.createAndSaveCompany(companyName, companies);
 
                     System.out.println("Створення співробітників у нову компанію.");
                     showEmpCreationMenu(newCompany, input, app.employeeService);
                     break;
-                case 3:
+                case 4:
                     selectedCompany = chooseCompany(companies, input);
                     if (selectedCompany != null) {
                         showEmpCreationMenu(selectedCompany, input, app.employeeService);
                     }
                     break;
-                case 4:
+                case 5:
                     selectedCompany = chooseCompany(companies, input);
                     if (selectedCompany != null) {
                         showEmpSearchCriteriaMenu(selectedCompany, input);
                     }
                     break;
-                case 5:
+                case 6:
                     app.txtImportService.loadCompanies("companies.txt", companies);
                     break;
-                case 6:
+                case 7:
                     app.companyJsonService.loadCompanies("companies.json", companies);
                     break;
-                case 7:
+                case 8:
                     app.companyJsonWriter.saveToFile("outputCompanies.json", companies);
                     return;
                 default:
@@ -182,7 +191,9 @@ public class Main {
             System.out.println("Список компаній порожній.");
             return null;
         } else {
-            System.out.println(companies);
+            for (Company company : companies) {
+                System.out.println(company);
+            }
             int id = input.readInt("Введіть ID компанії, щоб обрати її: ");
             Company selectedCompany = CompanyUtils.findById(companies, id);
 

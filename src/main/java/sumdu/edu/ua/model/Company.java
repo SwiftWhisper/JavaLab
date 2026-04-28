@@ -90,8 +90,7 @@ public class Company {
         return result;
     }
 
-    @Override
-    public String toString() {
+    public String toFullString() {
         StringBuilder sb = new StringBuilder();
 
         sb.append("Company {\n");
@@ -111,6 +110,11 @@ public class Company {
         sb.append("}");
 
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + " | Назва: " + name;
     }
 }
 
