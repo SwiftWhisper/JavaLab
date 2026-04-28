@@ -1,5 +1,8 @@
 package sumdu.edu.ua.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import sumdu.edu.ua.validators.EmployeeValidator;
@@ -36,6 +39,13 @@ public class FullTimeEmployee extends Employee{
     public void setYearsInCompany(int yearsInCompany){
         VALIDATOR.validateYearsInCompany(yearsInCompany);
         this.yearsInCompany = yearsInCompany;
+    }
+
+    @Override
+    public Map<String, Object> getDbFields() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("Years_in_company", this.getYearsInCompany());
+        return map;
     }
 
     @Override 

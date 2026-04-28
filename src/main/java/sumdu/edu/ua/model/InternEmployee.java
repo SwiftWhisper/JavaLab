@@ -1,5 +1,8 @@
 package sumdu.edu.ua.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import sumdu.edu.ua.validators.EmployeeValidator;
@@ -51,6 +54,14 @@ public class InternEmployee extends Employee {
     public void setInternshipMonths(int internshipMonths) {
         VALIDATOR.validateInternshipMonths(internshipMonths);
         this.internshipMonths = internshipMonths;
+    }
+
+    @Override
+    public Map<String, Object> getDbFields() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("University", this.getUniversity());
+        map.put("Internship_months", this.getInternshipMonths());
+        return map;
     }
 
     @Override 

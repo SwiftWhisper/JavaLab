@@ -1,5 +1,8 @@
 package sumdu.edu.ua.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import sumdu.edu.ua.validators.EmployeeValidator;
@@ -36,6 +39,13 @@ public class PartTimeEmployee extends Employee {
     public void setHoursInDay(int hoursInDay) {
         VALIDATOR.validateHoursInDay(hoursInDay);
         this.hoursInDay = hoursInDay;
+    }
+
+    @Override
+    public Map<String, Object> getDbFields() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("Hours_in_day", this.getHoursInDay());
+        return map;
     }
 
     @Override 

@@ -1,30 +1,27 @@
 package sumdu.edu.ua.model;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import sumdu.edu.ua.validators.EmployeeValidator;
-import java.util.Objects;
 
 public abstract class Employee {
-    protected int id;
-    protected static int nextId=1;
+    protected int localId;
+    protected Long databaseId;
+    private static int nextId=1;
     protected String nameSurname;
     protected int age;
     protected double salary;
     protected Position position;
 
-    private static int empCount = 0;
-
     protected abstract EmployeeValidator getValidator();
+
     public abstract EmployeeType getType();
-
-    public static int getEmpCount() {
-        return empCount;
-    }
-
     public Employee() {
-        this.id = nextId++;
-        empCount++;
+        this.localId = nextId++;
     }
     
     public Employee(String nameSurname, int age, double salary, Position position) {
@@ -43,8 +40,28 @@ public abstract class Employee {
         this.position = other.position; 
     }
 
-    public int getId() {
-        return id;
+    public int getLocalId() {
+        return localId;
+    }
+
+    public Long getDatabaseId() {
+        return databaseId;
+    }
+
+    public void assignDatabaseId(Long databaseId) {
+        if (databaseId == null) {
+            throw new IllegalArgumentException("Database ID не може бути null.");
+        }
+
+        if (this.databaseId != null) {
+            throw new IllegalStateException("Database ID вже встановлений.");
+        }
+
+        this.databaseId = databaseId;
+    }
+    
+    public Long getDisplayId() {
+        return (databaseId != null) ? databaseId : localId;
     }
 
     public String getNameSurname() {
@@ -91,8 +108,12 @@ public abstract class Employee {
         node.put("position", getPosition().name());
     }
 
+    public Map<String, Object> getDbFields() {
+        return new HashMap<>();
+    }
+
     protected String baseToString() {
-        return "id=" + id +
+        return "id=" + getDisplayId() +
                 ", nameSurname='" + nameSurname + '\'' +
                 ", age=" + age +
                 ", salary=" + salary +
@@ -109,16 +130,18 @@ public abstract class Employee {
         if (this == o) return true;
         if (!(o instanceof Employee emp)) return false;
 
-        return id == emp.id
-                && age == emp.age
-                && Double.compare(salary, emp.salary) == 0
-                && Objects.equals(nameSurname, emp.nameSurname)
-                && position == emp.position;
+        if (this.databaseId != null && emp.databaseId != null) {
+        return Objects.equals(this.databaseId, emp.databaseId);
+        }
+
+        return this.localId == emp.localId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nameSurname, age, salary, position);
+        return (databaseId != null)
+                ? Objects.hash(databaseId)
+                : Objects.hash(localId);
     }
     
 }

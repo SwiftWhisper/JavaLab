@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Company {
-    private int id = 0;
+    private int localId = 0;
+    private Long databaseId;
     private static int nextId = 1;
     private String name;
     private List<Employee> employees;
 
     public Company() {
-        this.id = nextId++;
+        this.localId = nextId++;
         employees = new ArrayList<Employee>();
     }
 
@@ -42,8 +43,28 @@ public class Company {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public int getLocalId() {
+        return localId;
+    }
+
+    public Long getDatabaseId() {
+        return databaseId;
+    }
+
+    public void assignDatabaseId(Long databaseId) {
+        if (databaseId == null) {
+            throw new IllegalArgumentException("Database ID не може бути null.");
+        }
+
+        if (this.databaseId != null) {
+            throw new IllegalStateException("Database ID вже встановлений.");
+        }
+
+        this.databaseId = databaseId;
+    }
+    
+    public Long getDisplayId() {
+        return (databaseId != null) ? databaseId : localId;
     }
 
     public List<Employee> searchByNameSurname(String nameSurname) {
@@ -95,7 +116,7 @@ public class Company {
         StringBuilder sb = new StringBuilder();
 
         sb.append("Company {\n");
-        sb.append("  id = ").append(id).append("\n");
+        sb.append("  id = ").append(getDisplayId()).append("\n");
         sb.append("  name = '").append(name).append("'\n");
         sb.append("  employees = [\n");
 

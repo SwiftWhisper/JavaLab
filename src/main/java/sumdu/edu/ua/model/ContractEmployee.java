@@ -1,9 +1,12 @@
 package sumdu.edu.ua.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import sumdu.edu.ua.validators.EmployeeValidator;
 import sumdu.edu.ua.validators.ContractEmployeeValidator;
+import sumdu.edu.ua.validators.EmployeeValidator;
 
 public class ContractEmployee extends Employee{
     private static final ContractEmployeeValidator VALIDATOR = new ContractEmployeeValidator();
@@ -37,6 +40,13 @@ public class ContractEmployee extends Employee{
     public void setDurationOfContract(int durationOfContract){
         VALIDATOR.validateDurationOfContract(durationOfContract);
         this.durationOfContract = durationOfContract;
+    }
+
+    @Override
+    public Map<String, Object> getDbFields() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("Duration_of_contract", this.getDurationOfContract());
+        return map;
     }
 
     @Override 
