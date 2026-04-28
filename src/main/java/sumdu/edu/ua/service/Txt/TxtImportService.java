@@ -6,19 +6,24 @@ import java.util.List;
 
 import sumdu.edu.ua.EmployeeDto;
 import sumdu.edu.ua.model.Company;
-import sumdu.edu.ua.model.Employee;
-import sumdu.edu.ua.service.EmployeeFactory;
+import sumdu.edu.ua.service.CompanyService;
+import sumdu.edu.ua.service.EmployeeService;
 import sumdu.edu.ua.validators.CompanyValidator;
 
 public class TxtImportService {
-    private final CompanyValidator companyValidator = new CompanyValidator();
+    private final EmployeeService employeeService;
+    private final CompanyService companyService;
+    private final TxtEmployeeMapper mapper;
+
+    public TxtImportService (EmployeeService employeeService, CompanyService companyService, TxtEmployeeMapper mapper) {
+        this.employeeService = employeeService;
+        this.companyService = companyService;
+        this.mapper = mapper;
+    }
 
     public void loadCompanies(String filePath, List<Company> companies) {
         try {
             List<String> lines = Files.readAllLines(Path.of(filePath));
-
-            TxtEmployeeMapper mapper = new TxtEmployeeMapper();
-            EmployeeFactory factory = new EmployeeFactory();
 
             Company currentCompany = null;
 
@@ -31,9 +36,8 @@ public class TxtImportService {
 
                 if (line.startsWith("COMPANY:")) {
                     String name = line.substring(8).trim();
-                    companyValidator.validateName(name);
-                    currentCompany = new Company(name);
-                    companies.add(currentCompany);
+                    CompanyValidator.validateCompanyName(name);
+                    currentCompany = companyService.createAndSaveCompany(name, companies);
                     continue;
                 }
 
@@ -52,10 +56,7 @@ public class TxtImportService {
                     String[] parts = employeeData.split(";");
 
                     EmployeeDto dto = mapper.map(parts);
-                    Employee emp = factory.createEmployee(dto);
-
-                    currentCompany.addEmployee(emp);
-
+                    employeeService.createAndSaveEmployee(dto, currentCompany);
                 } catch (Exception e) {
                     System.out.println("Помилка в рядку: " + line);
                     System.out.println(e.getMessage());

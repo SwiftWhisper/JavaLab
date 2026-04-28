@@ -6,18 +6,26 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import sumdu.edu.ua.EmployeeDto;
 import sumdu.edu.ua.model.Company;
-import sumdu.edu.ua.model.Employee;
-import sumdu.edu.ua.service.EmployeeFactory;
+import sumdu.edu.ua.service.CompanyService;
+import sumdu.edu.ua.service.EmployeeService;
 import sumdu.edu.ua.validators.CompanyValidator;
 
 public class CompanyJsonService {
-    private final JsonEmployeeMapper mapper = new JsonEmployeeMapper();
-    private final EmployeeFactory factory = new EmployeeFactory();
-    private final CompanyValidator companyValidator = new CompanyValidator();
+    private final EmployeeService employeeService;
+    private final CompanyService companyService;
+    private final JsonEmployeeMapper mapper;
+    private final JsonLoader jsonLoader;
+
+    public CompanyJsonService(EmployeeService employeeService, CompanyService companyService, JsonEmployeeMapper mapper, JsonLoader jsonLoader) {
+        this.employeeService = employeeService;
+        this.companyService = companyService;
+        this.mapper = mapper;
+        this.jsonLoader = jsonLoader;
+    }
 
     public void loadCompanies(String filePath, List<Company> companies) {
         try {
-            JsonNode root = JsonLoader.loadJson(filePath);
+            JsonNode root = jsonLoader.loadJson(filePath);
             if (root == null || !root.isArray()) {
                 throw new IllegalArgumentException("Корінь JSON повинен бути масивом компаній.");
             }
@@ -39,7 +47,7 @@ public class CompanyJsonService {
     private void processCompanyNode(JsonNode companyNode, int companyIndex, List<Company> companies) {
         try {
             String companyName = readCompanyName(companyNode);
-            Company company = new Company(companyName);
+            Company company = companyService.createAndSaveCompany(companyName, companies);
 
             JsonNode employeesNode = companyNode.get("employees");
 
@@ -52,8 +60,6 @@ public class CompanyJsonService {
                 employeeIndex++;
                 processEmployeeNode(employeeNode, employeeIndex, company);
             }
-
-            companies.add(company);
 
         } catch (IllegalArgumentException e) {
             String companyName = companyNode.has("name")
@@ -70,16 +76,14 @@ public class CompanyJsonService {
         }
 
         String companyName = companyNode.get("name").asText();
-        companyValidator.validateName(companyName);
+        CompanyValidator.validateCompanyName(companyName);
         return companyName;
     }
 
     private void processEmployeeNode(JsonNode employeeNode, int index, Company company) {
         try {
             EmployeeDto dto = mapper.map(employeeNode);
-            Employee employee = factory.createEmployee(dto);
-
-            company.addEmployee(employee);
+            employeeService.createAndSaveEmployee(dto, company);
 
         } catch (IllegalArgumentException e) {
             String employeeName = employeeNode.has("nameSurname")

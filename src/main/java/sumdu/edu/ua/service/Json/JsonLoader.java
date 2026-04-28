@@ -7,9 +7,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonLoader {
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
-    public static JsonNode loadJson(String filePath) throws IOException {
-        return mapper.readTree(new File(filePath));
+    public JsonLoader (ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
+    public JsonNode loadJson(String filePath) throws IOException {
+        return objectMapper.readTree(new File(filePath));
     }
 }

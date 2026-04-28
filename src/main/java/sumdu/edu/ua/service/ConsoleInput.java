@@ -56,12 +56,12 @@ public class ConsoleInput {
         }
     }
 
-    public String readValidName(CompanyValidator validator) {
+    public String readValidCompanyName() {
         String message = "Введіть назву компанії: ";
         while (true) {
             String name = readNonEmptyString(message);
             try {
-                validator.validateName(name);
+                CompanyValidator.validateCompanyName(name);
                 return name;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());

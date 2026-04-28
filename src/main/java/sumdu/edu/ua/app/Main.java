@@ -1,20 +1,17 @@
-package sumdu.edu.ua;
+package sumdu.edu.ua.app;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import sumdu.edu.ua.EmployeeDto;
 import sumdu.edu.ua.model.Company;
 import sumdu.edu.ua.model.CompareType;
 import sumdu.edu.ua.model.Employee;
 import sumdu.edu.ua.model.Position;
-import sumdu.edu.ua.service.ConsoleInput;
 import sumdu.edu.ua.service.CompanyUtils;
-import sumdu.edu.ua.service.EmployeeFactory;
-import sumdu.edu.ua.service.Json.CompaniesJsonWriter;
-import sumdu.edu.ua.service.Json.CompanyJsonService;
-import sumdu.edu.ua.validators.CompanyValidator;
-import sumdu.edu.ua.service.Txt.TxtImportService;
+import sumdu.edu.ua.service.ConsoleInput;
+import sumdu.edu.ua.service.EmployeeService;
 
 public class Main {
     /**
@@ -23,18 +20,19 @@ public class Main {
      * @param args аргументи командного рядка
      */
     public static void main(String[] args){
+        AppBootstrap bootstrap = new AppBootstrap();
+        AppContext app = bootstrap.initInMemory();
+
         Scanner scanner = new Scanner(System.in);
         ConsoleInput input = new ConsoleInput(scanner);
-        EmployeeFactory empFactory = new EmployeeFactory();
+
 
         List<Company> companies = new ArrayList<>();
-        companies.add(new Company("Google"));
 
-        showMainMenu(companies, input, empFactory);
+        showMainMenu(companies, input, app);
     }
 
-    private static void showMainMenu(List<Company> companies, ConsoleInput input, EmployeeFactory empFactory) {
-        CompanyValidator companyValidator = new CompanyValidator();
+    private static void showMainMenu(List<Company> companies, ConsoleInput input, AppContext app) {
         Company selectedCompany;
         while (true) {
             System.out.println("Виберіть дію обравши її номер:");
@@ -57,17 +55,16 @@ public class Main {
                     }
                     break;
                 case 2:
-                    String name = input.readValidName(companyValidator);
-                    Company newCompany = new Company(name);
-                    companies.add(newCompany);
+                    String companyName = input.readValidCompanyName();
+                    Company newCompany = app.companyService.createAndSaveCompany(companyName, companies);
 
                     System.out.println("Створення співробітників у нову компанію.");
-                    showEmpCreationMenu(newCompany, input, empFactory);
+                    showEmpCreationMenu(newCompany, input, app.employeeService);
                     break;
                 case 3:
                     selectedCompany = chooseCompany(companies, input);
                     if (selectedCompany != null) {
-                        showEmpCreationMenu(selectedCompany, input, empFactory);
+                        showEmpCreationMenu(selectedCompany, input, app.employeeService);
                     }
                     break;
                 case 4:
@@ -77,16 +74,13 @@ public class Main {
                     }
                     break;
                 case 5:
-                    TxtImportService txtImportService = new TxtImportService();
-                    txtImportService.loadCompanies("companies.txt", companies);
+                    app.txtImportService.loadCompanies("companies.txt", companies);
                     break;
                 case 6:
-                    CompanyJsonService companyJsonService = new CompanyJsonService();
-                    companyJsonService.loadCompanies("companies.json", companies);
+                    app.companyJsonService.loadCompanies("companies.json", companies);
                     break;
                 case 7:
-                    CompaniesJsonWriter writer = new CompaniesJsonWriter(); 
-                    writer.saveToFile("outputCompanies.json", companies);
+                    app.companyJsonWriter.saveToFile("outputCompanies.json", companies);
                     return;
                 default:
                     System.out.println("Такої опції немає, спробуйте ще раз.");
@@ -94,7 +88,7 @@ public class Main {
         }
     }
 
-    private static void showEmpCreationMenu(Company company, ConsoleInput input, EmployeeFactory empFactory) {
+    private static void showEmpCreationMenu(Company company, ConsoleInput input, EmployeeService employeeService) {
         while (true) {
             System.out.println("Виберіть тип співробітника якого ви будете додавати:");
             System.out.println("1. Full time employee.");
@@ -106,36 +100,32 @@ public class Main {
 
             int opt = input.readInt("Ваш вибір: ");
 
+            EmployeeDto dto;
             switch (opt) {
                 case 1: {
-                    EmployeeDto dto = input.readFullTimeEmployeeDto();
-                    company.addEmployee(empFactory.createEmployee(dto));
-                    System.out.println();
+                    dto = input.readFullTimeEmployeeDto();
                     break;
                 }
                 case 2: {
-                    EmployeeDto dto = input.readContractEmployeeDto();
-                    company.addEmployee(empFactory.createEmployee(dto));
-                    System.out.println();
+                    dto = input.readContractEmployeeDto();
                     break;
                 }
                 case 3: {
-                    EmployeeDto dto = input.readPartTimeEmployeeDto();
-                    company.addEmployee(empFactory.createEmployee(dto));
-                    System.out.println();
+                    dto = input.readPartTimeEmployeeDto();
                     break;
                 }
                 case 4: {
-                    EmployeeDto dto = input.readInternEmployeeDto();
-                    company.addEmployee(empFactory.createEmployee(dto));
-                    System.out.println();
+                    dto = input.readInternEmployeeDto();
                     break;
                 }
                 case 5:
                     return;
                 default:
                     System.out.println("Такої опції немає, спробуйте ще раз.");
+                    continue;
             }
+            employeeService.createAndSaveEmployee(dto, company);
+            System.out.println();
         }
     }
 

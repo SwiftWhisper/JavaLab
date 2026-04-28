@@ -11,20 +11,25 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import sumdu.edu.ua.model.Company;
 import sumdu.edu.ua.model.Employee;
 
-public class CompaniesJsonWriter {
+public class CompanyJsonWriter {
+
+    private final ObjectMapper objectMapper;
+
+    public CompanyJsonWriter (ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     public void saveToFile(String filePath, List<Company> companies) {
-        ObjectMapper mapper = new ObjectMapper();
-        ArrayNode root = mapper.createArrayNode();
+        ArrayNode root = objectMapper.createArrayNode();
 
         for (Company company : companies) {
-            ObjectNode companyNode = mapper.createObjectNode();
+            ObjectNode companyNode = objectMapper.createObjectNode();
             companyNode.put("name", company.getName());
 
-            ArrayNode employeesArray = mapper.createArrayNode();
+            ArrayNode employeesArray = objectMapper.createArrayNode();
 
             for (Employee e : company.getEmployees()) {
-                ObjectNode employeeNode = mapper.createObjectNode();
+                ObjectNode employeeNode = objectMapper.createObjectNode();
                 e.toJson(employeeNode);
                 employeesArray.add(employeeNode);
             }
@@ -33,7 +38,7 @@ public class CompaniesJsonWriter {
             root.add(companyNode);
         }
         try {
-            mapper.writerWithDefaultPrettyPrinter()
+            objectMapper.writerWithDefaultPrettyPrinter()
                     .writeValue(new File(filePath), root);
 
             System.out.println("Дані успішно збережено у файл.");
