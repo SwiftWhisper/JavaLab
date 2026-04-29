@@ -60,7 +60,7 @@ public class Main {
                 case 2:
                     selectedCompany = chooseCompany(companies, input);
                     if (selectedCompany != null) {
-                        System.out.println(selectedCompany.toFullString());
+                        System.out.println(selectedCompany.toFullStringEmpSorted());
                     }
                     break;                   
                 case 3:

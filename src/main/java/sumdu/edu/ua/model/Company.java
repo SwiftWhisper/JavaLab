@@ -1,8 +1,9 @@
 package sumdu.edu.ua.model;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class Company {
     private int id = 0;
@@ -90,7 +91,7 @@ public class Company {
         return result;
     }
 
-    public String toFullString() {
+    public String toFullStringEmpSorted() {
         StringBuilder sb = new StringBuilder();
 
         sb.append("Company {\n");
@@ -101,7 +102,9 @@ public class Company {
         if (employees.isEmpty()) {
             sb.append("    (немає співробітників)\n");
         } else {
-            for (Employee e : employees) {
+            List<Employee> sorted = new ArrayList<>(employees);
+            Collections.sort(sorted);
+            for (Employee e : sorted) {
                 sb.append("    ").append(e).append("\n");
             }
         }

@@ -1,11 +1,13 @@
 package sumdu.edu.ua.model;
 
+import java.util.Comparator;
+import java.util.Objects;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import sumdu.edu.ua.validators.EmployeeValidator;
-import java.util.Objects;
 
-public abstract class Employee {
+public abstract class Employee implements Comparable<Employee>{
     protected int id;
     protected static int nextId=1;
     protected String nameSurname;
@@ -97,6 +99,14 @@ public abstract class Employee {
                 ", age=" + age +
                 ", salary=" + salary +
                 ", position=" + position;
+    }
+
+    @Override
+    public int compareTo(Employee other) {
+        int result = Double.compare(other.salary, this.salary);
+        if (result != 0) return result;
+
+        return Integer.compare(this.id, other.id);
     }
 
     @Override
