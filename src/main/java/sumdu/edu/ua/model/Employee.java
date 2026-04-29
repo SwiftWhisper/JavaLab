@@ -1,6 +1,5 @@
 package sumdu.edu.ua.model;
 
-import java.util.Comparator;
 import java.util.Objects;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;

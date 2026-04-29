@@ -2,7 +2,7 @@ package sumdu.edu.ua.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Company {
@@ -91,7 +91,7 @@ public class Company {
         return result;
     }
 
-    public String toFullStringEmpSorted() {
+    public String toFullStringEmpSorted(Comparator<Employee> comparator) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("Company {\n");
@@ -103,7 +103,7 @@ public class Company {
             sb.append("    (немає співробітників)\n");
         } else {
             List<Employee> sorted = new ArrayList<>(employees);
-            Collections.sort(sorted);
+            sorted.sort(comparator);
             for (Employee e : sorted) {
                 sb.append("    ").append(e).append("\n");
             }

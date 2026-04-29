@@ -11,6 +11,7 @@ import sumdu.edu.ua.model.Employee;
 import sumdu.edu.ua.model.Position;
 import sumdu.edu.ua.service.CompanyUtils;
 import sumdu.edu.ua.service.ConsoleInput;
+import sumdu.edu.ua.service.EmployeeComparators;
 import sumdu.edu.ua.service.EmployeeService;
 
 public class Main {
@@ -60,7 +61,7 @@ public class Main {
                 case 2:
                     selectedCompany = chooseCompany(companies, input);
                     if (selectedCompany != null) {
-                        System.out.println(selectedCompany.toFullStringEmpSorted());
+                    showEmpSortCriteriaMenu(selectedCompany, input);
                     }
                     break;                   
                 case 3:
@@ -154,6 +155,7 @@ public class Main {
                 case 1: {
                     String searchedNameSurname = input.readNonEmptyString("Введіть ім'я або його частину для пошуку: ");
                     searchResult = company.searchByNameSurname(searchedNameSurname);
+
                     break;
                 }
                 case 2: {
@@ -182,6 +184,41 @@ public class Main {
                     System.out.println("  - " + e);
                 }
             }
+            System.out.println();
+        }
+    }
+
+    private static void showEmpSortCriteriaMenu(Company company, ConsoleInput input) {
+        while (true) {
+            System.out.println("Виберіть критерій сортування співробітників:");
+            System.out.println("1. Сортувати співробітнів за ім'ям.");
+            System.out.println("2. Сортувати співробітників за віком");
+            System.out.println("3. Сортувати співробітників за заробітньою платою");
+            System.out.println("4. Відмінити сортування");
+            System.out.println();
+
+            int opt = input.readInt("Ваш вибір: ");
+
+            switch (opt) {
+                case 1: {
+                    System.out.println(company.toFullStringEmpSorted(EmployeeComparators.BY_NAMESURNAME));
+                    break;
+                }
+                case 2: {
+                    System.out.println(company.toFullStringEmpSorted(EmployeeComparators.BY_AGE));
+                    break;
+                }
+                case 3: {
+                    System.out.println(company.toFullStringEmpSorted(EmployeeComparators.BY_SALARY));
+                    break;
+                }
+                case 4:{
+                    return;
+                }
+                default:
+                    System.out.println("Такої опції немає, спробуйте ще раз.");
+            }
+
             System.out.println();
         }
     }
