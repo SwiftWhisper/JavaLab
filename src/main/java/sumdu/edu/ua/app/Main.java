@@ -3,6 +3,7 @@ package sumdu.edu.ua.app;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 import sumdu.edu.ua.EmployeeDto;
 import sumdu.edu.ua.model.Company;
@@ -231,8 +232,8 @@ public class Main {
             for (Company company : companies) {
                 System.out.println(company);
             }
-            int id = input.readInt("Введіть ID компанії, щоб обрати її: ");
-            Company selectedCompany = CompanyUtils.findById(companies, id);
+            UUID uuid = UUID.fromString( input.readNonEmptyString("Введіть UUID компанії: "));
+            Company selectedCompany = CompanyUtils.findByUuid(companies, uuid);
 
             if (selectedCompany != null) {
                 return selectedCompany;
@@ -242,5 +243,6 @@ public class Main {
             }
         }
     }
+
 
 }

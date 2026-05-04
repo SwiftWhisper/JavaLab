@@ -1,14 +1,14 @@
 package sumdu.edu.ua.model;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import sumdu.edu.ua.validators.EmployeeValidator;
 
-public abstract class Employee implements Comparable<Employee>{
-    protected int id;
-    protected static int nextId=1;
+public abstract class Employee implements Comparable<Employee>, Identifiable{
+    protected UUID uuid = UUID.randomUUID();
     protected String nameSurname;
     protected int age;
     protected double salary;
@@ -24,7 +24,6 @@ public abstract class Employee implements Comparable<Employee>{
     }
 
     public Employee() {
-        this.id = nextId++;
         empCount++;
     }
     
@@ -44,8 +43,9 @@ public abstract class Employee implements Comparable<Employee>{
         this.position = other.position; 
     }
 
-    public int getId() {
-        return id;
+    @Override
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getNameSurname() {
@@ -93,7 +93,7 @@ public abstract class Employee implements Comparable<Employee>{
     }
 
     protected String baseToString() {
-        return "id=" + id +
+        return "id=" + uuid +
                 ", nameSurname='" + nameSurname + '\'' +
                 ", age=" + age +
                 ", salary=" + salary +
@@ -105,7 +105,7 @@ public abstract class Employee implements Comparable<Employee>{
         int result = Double.compare(other.salary, this.salary);
         if (result != 0) return result;
 
-        return Integer.compare(this.id, other.id);
+        return this.uuid.compareTo(other.uuid);
     }
 
     @Override
@@ -118,7 +118,7 @@ public abstract class Employee implements Comparable<Employee>{
         if (this == o) return true;
         if (!(o instanceof Employee emp)) return false;
 
-        return id == emp.id
+        return uuid == emp.uuid
                 && age == emp.age
                 && Double.compare(salary, emp.salary) == 0
                 && Objects.equals(nameSurname, emp.nameSurname)
@@ -127,7 +127,7 @@ public abstract class Employee implements Comparable<Employee>{
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nameSurname, age, salary, position);
+        return Objects.hash(uuid, nameSurname, age, salary, position);
     }
     
 }

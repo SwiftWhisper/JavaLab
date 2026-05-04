@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
-public class Company {
-    private int id = 0;
-    private static int nextId = 1;
+public class Company implements Identifiable {
+    private UUID uuid = UUID.randomUUID();
     private String name;
     private List<Employee> employees;
 
     public Company() {
-        this.id = nextId++;
         employees = new ArrayList<Employee>();
     }
 
@@ -43,8 +42,9 @@ public class Company {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    @Override
+    public UUID getUuid() {
+        return uuid;
     }
 
     public List<Employee> searchByNameSurname(String nameSurname) {
@@ -95,7 +95,7 @@ public class Company {
         StringBuilder sb = new StringBuilder();
 
         sb.append("Company {\n");
-        sb.append("  id = ").append(id).append("\n");
+        sb.append("  id = ").append(uuid).append("\n");
         sb.append("  name = '").append(name).append("'\n");
         sb.append("  employees = [\n");
 
@@ -117,7 +117,7 @@ public class Company {
 
     @Override
     public String toString() {
-        return "ID: " + id + " | Назва: " + name;
+        return "ID: " + uuid + " | Назва: " + name;
     }
 }
 

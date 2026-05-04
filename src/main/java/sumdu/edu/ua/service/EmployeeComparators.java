@@ -11,7 +11,7 @@ public class EmployeeComparators {
             int result = Double.compare(e1.getSalary(), e2.getSalary());
             if (result != 0) return result;
 
-            return Integer.compare(e1.getId(), e2.getId());
+            return e1.getUuid().compareTo(e2.getUuid());
         };
 
     public static final Comparator<Employee> BY_NAMESURNAME = 
@@ -19,8 +19,7 @@ public class EmployeeComparators {
             int result = e1.getNameSurname().compareToIgnoreCase(e2.getNameSurname());
             if (result != 0) return result;
 
-            return Integer.compare(e1.getId(), e2.getId());
-
+            return e1.getUuid().compareTo(e2.getUuid());
         };
 
     public static final Comparator<Employee> BY_AGE = 
@@ -28,7 +27,6 @@ public class EmployeeComparators {
             int result  = Integer.compare(e1.getAge(), e2.getAge());
             if (result != 0) return result;
 
-            return Integer.compare(e1.getId(), e2.getId());
-
+            return e1.getUuid().compareTo(e2.getUuid());
         };
 }
