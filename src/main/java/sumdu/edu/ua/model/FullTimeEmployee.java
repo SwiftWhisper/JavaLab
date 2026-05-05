@@ -13,9 +13,18 @@ public class FullTimeEmployee extends Employee{
     public FullTimeEmployee() {
         super();
     }
-        
+
+    public FullTimeEmployee(int id) {
+        super(id);
+    }       
+
     public FullTimeEmployee(String nameSurname, int age, double salary, Position position, int yearsInCompany) {
         super(nameSurname, age, salary, position);
+        setYearsInCompany(yearsInCompany);
+    }
+
+    public FullTimeEmployee(int id, String nameSurname, int age, double salary, Position position, int yearsInCompany) {
+        super(id, nameSurname, age, salary, position);
         setYearsInCompany(yearsInCompany);
     }
 

@@ -16,9 +16,20 @@ public class InternEmployee extends Employee {
         super();
     }
 
+    public InternEmployee(int id) {
+        super(id);
+    }
+
     public InternEmployee(String nameSurname, int age, double salary, Position position,
                           String university, int internshipMonths) {
         super(nameSurname, age, salary, position);
+        setUniversity(university);
+        setInternshipMonths(internshipMonths);
+    }
+
+    public InternEmployee(int id, String nameSurname, int age, double salary, Position position,
+                          String university, int internshipMonths) {
+        super(id, nameSurname, age, salary, position);
         setUniversity(university);
         setInternshipMonths(internshipMonths);
     }

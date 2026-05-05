@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Scanner;
 
 import sumdu.edu.ua.EmployeeDto;
+import sumdu.edu.ua.console.ConsoleChooser;
 import sumdu.edu.ua.model.Company;
 import sumdu.edu.ua.model.CompareType;
 import sumdu.edu.ua.model.Employee;
 import sumdu.edu.ua.model.Position;
-import sumdu.edu.ua.service.CompanyUtils;
 import sumdu.edu.ua.service.ConsoleInput;
 import sumdu.edu.ua.service.EmployeeComparators;
 import sumdu.edu.ua.service.EmployeeService;
@@ -26,21 +26,22 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
         ConsoleInput input = new ConsoleInput(scanner);
+        ConsoleChooser consoleChooser = new ConsoleChooser(input);
 
 
         List<Company> companies = new ArrayList<>();
 
-        showMainMenu(companies, input, app);
+        showMainMenu(companies, input, consoleChooser, app);
     }
 
-    private static void showMainMenu(List<Company> companies, ConsoleInput input, AppContext app) {
+    private static void showMainMenu(List<Company> companies, ConsoleInput input, ConsoleChooser consoleChooser, AppContext app) {
         Company selectedCompany;
         while (true) {
             System.out.println("Виберіть дію обравши її номер:");
             System.out.println("1. Вивести всі компанії.");
             System.out.println("2. Вивести компанію з відсортованими співробітниками."); 
             System.out.println("3. Створити нову компанію.");
-            System.out.println("4. Додати співробітників в конкретну компанію.");
+            System.out.println("4. Виконати дії з співробітниками конкретної компанії.");
             System.out.println("5. Пошук співробітників.");
             System.out.println("6. Зчитати інформацію про компанії з txt.");
             System.out.println("7. Зчитати інформацію про компанії з json.");
@@ -59,7 +60,8 @@ public class Main {
                     }
                     break;
                 case 2:
-                    selectedCompany = chooseCompany(companies, input);
+                    selectedCompany = consoleChooser.chooseCompany(companies);
+
                     if (selectedCompany != null) {
                     showEmpSortCriteriaMenu(selectedCompany, input);
                     }
@@ -72,13 +74,13 @@ public class Main {
                     showEmpCreationMenu(newCompany, input, app.employeeService);
                     break;
                 case 4:
-                    selectedCompany = chooseCompany(companies, input);
+                    selectedCompany = consoleChooser.chooseCompany(companies);
                     if (selectedCompany != null) {
-                        showEmpCreationMenu(selectedCompany, input, app.employeeService);
+                        showEmpActionMenu(selectedCompany, input, app.employeeService, consoleChooser);
                     }
                     break;
                 case 5:
-                    selectedCompany = chooseCompany(companies, input);
+                    selectedCompany = consoleChooser.chooseCompany(companies);
                     if (selectedCompany != null) {
                         showEmpSearchCriteriaMenu(selectedCompany, input);
                     }
@@ -188,6 +190,49 @@ public class Main {
         }
     }
 
+    private static void showEmpActionMenu(Company company, ConsoleInput input, EmployeeService employeeService, ConsoleChooser consoleChooser) {
+        EmployeeUpdateMenu employeeUpdateMenu = new EmployeeUpdateMenu(input, employeeService, consoleChooser);
+        while (true) {
+            System.out.println("Виберіть дію:");
+            System.out.println("1. Додати нового співробітника.");
+            System.out.println("2. Оновити інформацію існуючого співробітника");
+            System.out.println("3. Видалити співробітника");
+            System.out.println("4. Повернутись.");
+            System.out.println();
+
+            int opt = input.readInt("Ваш вибір: ");
+
+            switch (opt) {
+                case 1: {
+                    showEmpCreationMenu(company, input, employeeService);
+                    break;
+                }
+                case 2: { 
+                    employeeUpdateMenu.updateEmployee(company);
+                    break;
+                }
+                case 3: {
+                    System.out.println("Введіть id співробітника, якого ви хочете видалити.");
+                    Employee deletedEmployee = consoleChooser.chooseEmployee(company);
+                    boolean deleted = company.deleteEmployee(deletedEmployee);
+                    if (deleted) {
+                        System.out.println("Співробітника успішно видалено.");
+                    } else {
+                        System.out.println("Не вдалося видалити співробітника.");
+                    }
+                    break;
+                }
+                case 4:{
+                    return;
+                }
+                default:
+                    System.out.println("Такої опції немає, спробуйте ще раз.");
+            }
+
+            System.out.println();
+        }
+    }
+ 
     private static void showEmpSortCriteriaMenu(Company company, ConsoleInput input) {
         while (true) {
             System.out.println("Виберіть критерій сортування співробітників:");
@@ -222,25 +267,4 @@ public class Main {
             System.out.println();
         }
     }
-
-    private static Company chooseCompany(List<Company> companies, ConsoleInput input) {
-        if (companies.isEmpty()) {
-            System.out.println("Список компаній порожній.");
-            return null;
-        } else {
-            for (Company company : companies) {
-                System.out.println(company);
-            }
-            int id = input.readInt("Введіть ID компанії, щоб обрати її: ");
-            Company selectedCompany = CompanyUtils.findById(companies, id);
-
-            if (selectedCompany != null) {
-                return selectedCompany;
-            } else {
-                System.out.println("Компанії з таким ID немає.");
-                return null;
-            }
-        }
-    }
-
 }

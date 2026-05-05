@@ -21,4 +21,8 @@ public class EmployeeService {
         employeeRepository.save(employee, company);
         return employee;
     }
+
+    public Employee createEmployee(EmployeeDto dto) {
+        return factory.createEmployee(dto);
+    }
 }

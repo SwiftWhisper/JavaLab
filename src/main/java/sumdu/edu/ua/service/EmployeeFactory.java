@@ -55,6 +55,10 @@ public class EmployeeFactory {
         validator.validateSalary(salary);
         validator.validateYearsInCompany(years);
 
+        if (dto.getId() != null) {
+            return new FullTimeEmployee(dto.getId(), name, age, salary, position, years);
+        }
+
         return new FullTimeEmployee(name, age, salary, position, years);
     }
 
@@ -79,6 +83,10 @@ public class EmployeeFactory {
         validator.validateAge(age);
         validator.validateSalary(salary);
         validator.validateDurationOfContract(duration);
+
+        if (dto.getId() != null) {
+            return new ContractEmployee(dto.getId(), name, age, salary, position, duration);
+        }
 
         return new ContractEmployee(name, age, salary, position, duration);
     }
@@ -105,6 +113,10 @@ public class EmployeeFactory {
         validator.validateSalary(salary);
         validator.validateHoursInDay(hours);
 
+        if (dto.getId() != null) {
+            return new PartTimeEmployee(dto.getId(), name, age, salary, position, hours);
+        }
+
         return new PartTimeEmployee(name, age, salary, position, hours);
     }
     /**
@@ -130,6 +142,10 @@ public class EmployeeFactory {
         validator.validateSalary(salary);
         validator.validateUniversity(university);
         validator.validateInternshipMonths(months);
+
+        if (dto.getId() != null) {
+            return new InternEmployee(dto.getId(), name, age, salary, position, university, months);
+        }
 
         return new InternEmployee(name, age, salary, position, university, months);
     }

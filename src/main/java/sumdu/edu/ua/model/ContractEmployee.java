@@ -13,9 +13,18 @@ public class ContractEmployee extends Employee{
     public ContractEmployee() {
         super();
     }
-        
+
+    public ContractEmployee(int id) {
+        super(id);
+    }       
+
     public ContractEmployee(String nameSurname, int age, double salary, Position position, int durationOfContract) {
         super(nameSurname, age, salary, position);
+        setDurationOfContract(durationOfContract);
+    }
+
+    public ContractEmployee(int id, String nameSurname, int age, double salary, Position position, int durationOfContract) {
+        super(id, nameSurname, age, salary, position);
         setDurationOfContract(durationOfContract);
     }
 

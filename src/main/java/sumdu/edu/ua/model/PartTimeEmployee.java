@@ -14,8 +14,17 @@ public class PartTimeEmployee extends Employee {
         super();
     }
 
+    public PartTimeEmployee(int id) {
+        super(id);
+    }
+
     public PartTimeEmployee(String nameSurname, int age, double salary, Position position, int hoursInDay) {
         super(nameSurname, age, salary, position);
+        setHoursInDay(hoursInDay);
+    }
+
+    public PartTimeEmployee(int id, String nameSurname, int age, double salary, Position position, int hoursInDay) {
+        super(id, nameSurname, age, salary, position);
         setHoursInDay(hoursInDay);
     }
 

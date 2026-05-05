@@ -23,12 +23,16 @@ public abstract class Employee implements Comparable<Employee>{
         return empCount;
     }
 
-    public Employee() {
+    protected Employee() {
         this.id = nextId++;
         empCount++;
     }
-    
-    public Employee(String nameSurname, int age, double salary, Position position) {
+
+    protected Employee(int id) {
+        this.id = id;
+    }   
+
+    protected Employee(String nameSurname, int age, double salary, Position position) {
         this();
         setNameSurname(nameSurname);
         setAge(age);
@@ -36,7 +40,15 @@ public abstract class Employee implements Comparable<Employee>{
         setPosition(position);
     }
 
-    public Employee(Employee other) {
+    protected Employee(int id, String nameSurname, int age, double salary, Position position) {
+        this(id);
+        setNameSurname(nameSurname);
+        setAge(age);
+        setSalary(salary);
+        setPosition(position);
+    }
+
+    protected Employee(Employee other) {
         this();
         this.nameSurname = other.nameSurname;
         this.age = other.age;

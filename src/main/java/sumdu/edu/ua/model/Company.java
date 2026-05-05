@@ -47,6 +47,54 @@ public class Company {
         return id;
     }
 
+    public Employee findEmployeeById (int id) {
+        for (Employee employee : employees) {
+            if (employee.getId() == id) {
+                return employee;
+            }
+        }
+
+        return null;
+    }
+    public int indexOf(Employee employee) {
+        for (int i = 0; i < employees.size(); i++) {
+            if (employees.get(i).equals(employee)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public boolean updateEmployee(Employee existingEmployee, Employee newEmployee) {
+       if (existingEmployee == null || newEmployee == null) {
+            return false;
+        }
+
+        int index = employees.indexOf(existingEmployee);
+
+        if (index == -1) {
+            return false;
+        }
+
+        employees.set(index, newEmployee);
+        return true;
+    }
+
+    public boolean deleteEmployee(Employee existingEmployee) {
+       if (existingEmployee == null) {
+            return false;
+        }
+
+        int index = employees.indexOf(existingEmployee);
+
+        if (index == -1) {
+            return false;
+        }
+
+        employees.remove(index);
+        return true;
+    }
+    
     public List<Employee> searchByNameSurname(String nameSurname) {
         List<Employee> result = new ArrayList<>();
         String searchedNameSurname = nameSurname.toLowerCase();
